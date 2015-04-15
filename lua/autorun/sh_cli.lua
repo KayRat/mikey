@@ -6,9 +6,6 @@ mike.commands.error = {
     NOT_FOUND,
 }
 
-local function showHelp()
-end
-
 local function rootHandler(objPl, strCmd, tblArgs)
     if(table.Count(tblArgs) <= 0) then return end
 
@@ -54,7 +51,7 @@ function mike.commands.exists(strCmd)
     if(type(strCmd) ~= "string") then
         strCmd = strCmd:getCommand()
     end
-    
+
     return mike.commands.list[strCmd] ~= nil
 end
 
