@@ -19,7 +19,11 @@ local function rootHandler(objPl, strCmd, tblArgs)
         local objCanRun = objCmd:canUserRun(objPl)
 
         if(objCanRun == true) then
-            objCmd:run(objPl, strCmd, tblArgs)
+            local tblCmdArgs = table.Copy(tblArgs)
+            table.remove(tblCmdArgs, 1)
+            local objFirst = tblCmdArgs[1]
+
+            objCmd:run(objPl, objFirst, unpack(tblCmdArgs))
         else
             if(objCanRun == mike.commands.error.NO_CONSOLE) then
                 mike.log.error("This command is forbidden from the console")
@@ -70,12 +74,11 @@ function mike.commands.new(strCmd, strHelp)
         -- functions
         ["getCommand"] = function(self) return self.strCmd end,
         ["getHelp"] = function(self) return self.strHelp end,
-        ["run"] = function(self, objPl, strCmd, tblArgs)
+        ["run"] = function(self, objPl, strFirst, ...)
             -- todo: logging?
-
-            self:onRun(objPl, strCmd, tblArgs)
+            self:onRun(objPl, strFirst, ...)
         end,
-        ["onRun"] = function(self, objPl, strCmd, tblArgs) end,
+        ["onRun"] = function(self, objPl, strFirst, tblArgs) end,
         ["canUserRun"] = function(self, objPl)
             return IsValid(objPl)
         end,

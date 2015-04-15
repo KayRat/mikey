@@ -9,12 +9,12 @@ function objMenu:canUserRun(objPl)
     return true
 end
 
-function objMenu:onRun(objPl, strCmd, tblArgs)
+function objMenu:onRun(objPl, strFirst, tblArgs)
     print("[SERVER] onRun called by", objPl, tblArgs and tblArgs[1] or nil)
 
-    if(table.Count(tblArgs) > 1) then
+    if(strFirst and string.len(strFirst) > 0) then
         net.Start("mike.commands.menu.open.withTarget")
-            net.WriteString(tblArgs[2])
+            net.WriteString(strFirst)
         net.Send(objPl)
     else
         net.Start("mike.commands.menu.open")
