@@ -43,16 +43,18 @@ if(SERVER) then
 end
 
 function mike.commands.add(objCmd)
-    local strCmd = objCmd:getCommand()
-
-    if(mike.commands.list[strCmd]) then
-        mike.log.warn("Command '%s' already exists; overwriting", strCmd)
+    if(mike.commands.exists(objCmd)) then
+        mike.log.warn("Command '%s' already exists; overwriting", objCmd:getCommand())
     end
 
-    mike.commands.list[strCmd] = objCmd
+    mike.commands.list[objCmd:getCommand()] = objCmd
 end
 
 function mike.commands.exists(strCmd)
+    if(type(strCmd) ~= "string") then
+        strCmd = strCmd:getCommand()
+    end
+    
     return mike.commands.list[strCmd] ~= nil
 end
 
