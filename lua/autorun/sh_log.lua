@@ -58,7 +58,7 @@ function mike.log.error(str, ...)
         mike.colors.error,
         "ERROR: ",
         color_white,
-        str.."\n",
+        str,
     }))
 
     str = "[MIKEY] WARN: "..str
