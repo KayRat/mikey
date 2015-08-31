@@ -1,6 +1,9 @@
 local objMenu = nil
 
 net.Receive("mike.commands.menu.open", function(iLen)
+    local bHasTarget = net.ReadBool()
+    local strTarget = bHasTarget and net.ReadString()
+
     if(IsValid(objMenu)) then
         objMenu:InvalidateLayout()
     else

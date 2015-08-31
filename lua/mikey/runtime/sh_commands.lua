@@ -4,6 +4,7 @@ mike.commands.list = mike.commands.list or {}
 mike.commands.error = {
     NO_CONSOLE,
     NOT_FOUND,
+    NO_PERMISSION,
 }
 
 local function rootHandler(objPl, strCmd, tblArgs)
@@ -23,7 +24,7 @@ local function rootHandler(objPl, strCmd, tblArgs)
             table.remove(tblCmdArgs, 1)
             local objFirst = tblCmdArgs[1]
 
-            objCmd:run(objPl, objFirst, unpack(tblCmdArgs))
+            objCmd:run(objPl, objFirst, tblCmdArgs)
         else
             if(objCanRun == mike.commands.error.NO_CONSOLE) then
                 mike.log.error("This command is forbidden from the console")
@@ -74,9 +75,9 @@ function mike.commands.new(strCmd, strHelp)
         -- functions
         ["getCommand"] = function(self) return self.strCmd end,
         ["getHelp"] = function(self) return self.strHelp end,
-        ["run"] = function(self, objPl, strFirst, ...)
+        ["run"] = function(self, objPl, strFirst, tblArgs)
             -- todo: logging?
-            self:onRun(objPl, strFirst, ...)
+            self:onRun(objPl, strFirst, tblArgs)
         end,
         ["onRun"] = function(self, objPl, strFirst, tblArgs) end,
         ["canUserRun"] = function(self, objPl)

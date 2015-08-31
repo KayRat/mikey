@@ -1,5 +1,4 @@
 util.AddNetworkString("mike.commands.menu.open")
-util.AddNetworkString("mike.commands.menu.open.withTarget")
 
 local objMenu = mike.commands.new("menu", "Show the menu")
 
@@ -12,14 +11,14 @@ end
 function objMenu:onRun(objPl, strFirst, tblArgs)
     print("[SERVER] onRun called by", objPl, tblArgs and tblArgs[1] or nil)
 
-    if(strFirst and string.len(strFirst) > 0) then
-        net.Start("mike.commands.menu.open.withTarget")
+    net.Start("mike.commands.menu.open")
+        if(strFirst and string.len(strFirst) > 0) then
+            net.WriteBool(true)
             net.WriteString(strFirst)
-        net.Send(objPl)
-    else
-        net.Start("mike.commands.menu.open")
-        net.Send(objPl)
-    end
+        else
+            net.WriteBool(false)
+        end
+    net.Send(objPl)
 end
 
 mike.commands.add(objMenu)
