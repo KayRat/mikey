@@ -2,6 +2,7 @@ mike = mike or {}
 mike.log = mike.log or {}
 
 local function out(str)
+  -- TODO: file and database logging
 end
 
 function mike.log.warn(str, ...)
