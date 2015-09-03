@@ -17,23 +17,6 @@ function mike.plugins.new(strName)
         ["onRun"] = function(self, objPl, strFirst, tblArgs) end,
     }
 
-    if(CLIENT) then
-        tblSkeleton["onRun"] = function(self, objPl)
-            RunConsoleCommand("mike", strName:lower(), objPl:UniqueID())
-        end
-    else
-        local objCmd = mike.commands.new(strName:lower())
-        objCmd.onRun = function(self, objPl, strFirst, tblArgs)
-            local objPlugin = mike.plugins.get(strName)
-
-            if(objPlugin) then
-                objPlugin:onRun(objPl, strFirst, tblArgs)
-            end
-        end
-
-        mike.commands.add(objCmd)
-    end
-
     tblSkeleton.__index = tblSkeleton
 
     local objPlugin = {}
