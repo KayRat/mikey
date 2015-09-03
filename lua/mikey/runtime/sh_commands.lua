@@ -76,7 +76,7 @@ function mike.commands.new(strCmd, strHelp)
         ["getCommand"] = function(self) return self.strCmd end,
         ["getHelp"] = function(self) return self.strHelp end,
         ["run"] = function(self, objPl, strFirst, tblArgs)
-            -- todo: logging?
+            -- TODO: logging?
             self:onRun(objPl, strFirst, tblArgs)
         end,
         ["onRun"] = function(self, objPl, strFirst, tblArgs) end,
