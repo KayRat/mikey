@@ -31,7 +31,7 @@ function mike.log.info(str, ...)
         color_white,          str.."\n",
     }))
 
-    str = "[MIKEY] WARN: "..str
+    str = "[MIKEY] INFO: "..str
 
     out(str)
 end
@@ -47,7 +47,7 @@ function mike.log.error(str, ...)
         color_white,          str,
     }))
 
-    str = "[MIKEY] WARN: "..str
+    str = "[MIKEY] ERROR: "..str
 
     out(str)
 end
