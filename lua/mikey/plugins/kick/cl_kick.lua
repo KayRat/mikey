@@ -1,9 +1,9 @@
 local objKick = mike.plugins.get("Kick")
 
-function objKick:onBuildDetailsMenu(menu, target)
+objKick.onBuildDetailsMenu = function(self, menu, target)
 end
 
-function objKick:onMenuClick(target)
+objKick.onMenuClick = function(self, target)
 end
 
 mike.plugins.add(objKick)
