@@ -9,13 +9,15 @@ mike.commands.error = {
 
 local function rootHandler(objPl, strCmd, tblArgs)
     if(table.Count(tblArgs) <= 0) then return end
+    
+    local silent = strCmd == "mikey"
 
     local strArg = tblArgs[1]
 
     if(mike.commands.exists(strArg)) then
         local objCmd = mike.commands.get(strArg)
 
-        if(not objCmd) then mike.log.error("No command???") end
+        if(not objCmd) then mike.log.error("No command??? Huh?") end
 
         local objCanRun = objCmd:canUserRun(objPl)
 
@@ -41,18 +43,16 @@ end
 
 if(SERVER) then
     concommand.Add("mike", rootHandler, nil, "Mike's Cereal Shack")
-    concommand.Add("mikey", rootHandler, nil, "Mikey's Cereal Shack")
+    concommand.Add("mikey", rootHandler, nil, "Mikey's Silent Cereal Shack")
 end
 
 function mike.commands.add(objCmd)
-    if(mike.commands.exists(objCmd)) then
-        mike.log.warn("Command '%s' already exists; overwriting", objCmd:getCommand())
-    end
-
     mike.commands.list[objCmd:getCommand()] = objCmd
 end
 
 function mike.commands.exists(strCmd)
+    if(strCmd == nil) then return false end
+    
     if(type(strCmd) ~= "string") then
         strCmd = strCmd:getCommand()
     end
@@ -69,10 +69,14 @@ function mike.commands.get(strCmd)
 end
 
 function mike.commands.new(strCmd, strHelp)
+    if(mike.commands.exists(objCmd)) then
+        mike.log.warn("Command '%s' already exists; overwriting", objCmd:getCommand())
+    end
+    
     local tblSkeleton = {
         -- data
         ["strCmd"] = strCmd,
-        ["strHelp"] = strHelp,
+        ["strHelp"] = strHelp or "",
 
         -- functions
         ["getCommand"] = function(self) return self.strCmd end,
