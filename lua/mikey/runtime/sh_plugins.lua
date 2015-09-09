@@ -3,7 +3,9 @@ mike.plugins = mike.plugins or {}
 mike.plugins.list = mike.plugins.list or {}
 mike.plugins.netMessages = mike.plugins.netMessages or {}
 
-util.AddNetworkString("mike.plugins.netMessage")
+if(SERVER) then
+  util.AddNetworkString("mike.plugins.netMessage")
+end
 
 net.Receive("mike.plugins.netMessage", function(len, pl)
   local msgName = net.ReadString()
