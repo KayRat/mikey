@@ -64,6 +64,8 @@ function mike.commands.get(strCmd)
     if(mike.commands.exists(strCmd)) then
         return mike.commands.list[strCmd]
     end
+    
+    return mike.commands.new(strCmd)
 end
 
 function mike.commands.new(strCmd, strHelp)
