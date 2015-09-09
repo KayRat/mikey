@@ -1,7 +1,7 @@
 local objKick = mike.plugins.get("Kick")
 local objKickCmd = mike.commands.get("kick")
 
-function objKick:canUserRun(objPl)
+objKick.canUserRun = function(self, objPl)
     if(not IsValid(objPl)) then return true end
 
     if(IsValid(objPl)) then return true end -- TODO: add actual permission logic wtf
