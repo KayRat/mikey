@@ -1,36 +1,38 @@
-local objKick = mike.plugins.get("Kick")
-local objKickCmd = mike.commands.get("kick")
+local kickPlugin = mike.plugins.get("Kick")
+local kickCmd = mike.commands.get("kick")
 
-objKick.canUserRun = function(self, objPl)
-    if(not IsValid(objPl)) then return true end
+kickCmd.canUserRun = function(self, pl, cmd, args)
+  local targetUniqueID = args[1]
 
-    if(IsValid(objPl)) then return true end -- TODO: add actual permission logic wtf
+  if(not IsValid(pl)) then
+    mike.log.error("Console is not permitted to kick")
+    return mike.commands.error.NO_CONSOLE
+  end
 
-    return mike.commands.error.NOT_FOUND
+  if(pl:hasPermission("kick")) then
+    reutrn true
+  end
+
+  return mike.commands.error.NO_PERMISSION
 end
 
-objKickCmd.onRun = function(self, pl, cmd, args)
+kickCmd.onRun = function(self, pl, cmd, args)
   local targetUniqueID = args[1]
-  
-  if(not IsValid(pl)) then
-    mike.info.error("Console tried to kick, this isn't supported yet")
-    return
-  end
-  
+
   local target = player.GetByUniqueID(targetUniqueID)
-  
+
   if(not IsValid(target)) then
     mike.log.error("Player '"..targetUniqueID.."' not found")
     return
   end
-  
+
   table.remove(args, 1)
-  
+
   local reason = #args > 0 and table.concat(args, " ") or "Consider this a warning...don't do it again"
-  
+
   mike.log.info("Kicking '"..target:Nick().."' ("..reason..")")
   target:Kick("Kicked by "..pl:Nick()..": "..reason)
 end
 
-mike.plugins.add(objKick)
-mike.commands.add(objKickCmd)
+mike.plugins.add(kickPlugin)
+mike.commands.add(kickCmd)
