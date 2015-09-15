@@ -26,15 +26,9 @@ function mike.plugins.new(strName)
     local tblSkeleton = {
         -- data
         ["name"] = strName,
-        ["command"] = strName:lower(),
 
         -- functions
         ["getName"] = function(self) return self.name end,
-        ["getCommand"] = function(self) return self.command end,
-        ["canUserRun"] = function(self, objPl)
-            return IsValid(objPl)
-        end,
-        ["onRun"] = function(self, objPl, strFirst, tblArgs) end,
 
         ["sendNetMessage"] = function(self, target, data)
           net.Start("mike.plugins.netMessage")
