@@ -2,98 +2,100 @@ mike = mike or {}
 mike.commands = mike.commands or {}
 mike.commands.list = mike.commands.list or {}
 mike.commands.error = {
-    NO_CONSOLE,
-    NOT_FOUND,
-    NO_PERMISSION,
+  ["NO_CONSOLE"]    = 1,
+  ["NO_PERMISSION"] = 2,
+  ["NOT_FOUND"]     = 3,
 }
 
-local function rootHandler(objPl, strCmd, tblArgs)
-    if(table.Count(tblArgs) <= 0) then return end
+local function rootHandler(pl, cmd, args)
+  if(table.Count(args) <= 0) then return end
 
-    local silent = strCmd == "mikey"
+  local silent = (cmd == "mikey")
 
-    local strArg = tblArgs[1]
+  local arg = args[1]
 
-    if(mike.commands.exists(strArg)) then
-        local objCmd = mike.commands.get(strArg)
+  if(mike.commands.exists(arg)) then
+    local targetCmd = mike.commands.get(arg)
+    PrintTable(targetCmd)
 
-        if(not objCmd) then mike.log.error("No command??? Huh?") end
+    local targetCmdArgs = table.Copy(args)
+    table.remove(args, 1)
 
-        local objCanRun = objCmd:canUserRun(objPl)
+    if(not targetCmd) then mike.log.error("No command??? Huh?") return end
 
-        if(objCanRun == true) then
-            local tblCmdArgs = table.Copy(tblArgs)
-            table.remove(tblCmdArgs, 1)
-            local objFirst = tblCmdArgs[1]
+    local canRun = targetCmd:canUserRun(pl, arg, targetCmdArgs)
 
-            objCmd:run(objPl, objFirst, tblCmdArgs)
-        else
-            if(objCanRun == mike.commands.error.NO_CONSOLE) then
-                mike.log.error("This command is forbidden from the console")
-            elseif(objCanRun == mike.commands.error.NOT_FOUND) then
-                mike.log.error("Command not found")
-            else
-                mike.log.error("Unknown error occurred ("..tostring(objCanRun)..")")
-            end
-        end
+    if(canRun == true) then
+      targetCmd:run(pl, targetCmd, args)
     else
-        mike.log.error("Command '"..strArg.."' not found")
+      if(canRun == mike.commands.error.NO_CONSOLE) then
+        mike.log.error("This command is forbidden from the console")
+      elseif(canRun == mike.commands.error.NO_PERMISSION) then
+        mike.log.error("No permission")
+      elseif(canRun == mike.commands.error.NOT_FOUND) then
+        mike.log.error("Command not found")
+      else
+        mike.log.error("Unknown error occurred ("..tostring(canRun)..")")
+      end
     end
+  else
+    mike.log.error("Command '"..arg.."' not found")
+  end
 end
 
 if(SERVER) then
-    concommand.Add("mike", rootHandler, nil, "Mike's Cereal Shack")
-    concommand.Add("mikey", rootHandler, nil, "Mikey's Silent Cereal Shack")
+  concommand.Add("mike", rootHandler, nil, "Mike's Cereal Shack")
+  concommand.Add("mikey", rootHandler, nil, "Mikey's ~Silent~ Cereal Shack")
 end
 
-function mike.commands.add(objCmd)
-    mike.commands.list[objCmd:getCommand()] = objCmd
+function mike.commands.add(cmd)
+  mike.commands.list[cmd:getCommand()] = cmd
 end
 
-function mike.commands.exists(strCmd)
-    if(strCmd == nil) then return false end
+function mike.commands.exists(cmd)
+  if(cmd == nil) then return false end
 
-    if(type(strCmd) ~= "string") then
-        strCmd = strCmd:getCommand()
-    end
+  if(type(cmd) ~= "string") then
+    cmd = cmd:getCommand()
+  end
 
-    return mike.commands.list[strCmd] ~= nil
+  return mike.commands.list[cmd] ~= nil
 end
 
-function mike.commands.get(strCmd)
-    if(mike.commands.exists(strCmd)) then
-        return mike.commands.list[strCmd]
-    end
+function mike.commands.get(cmd)
+  if(mike.commands.exists(cmd)) then
+    return mike.commands.list[cmd]
+  end
 
-    return mike.commands.new(strCmd)
+  return mike.commands.new(cmd)
 end
 
-function mike.commands.new(strCmd, strHelp)
-    if(mike.commands.exists(objCmd)) then
-        mike.log.warn("Command '%s' already exists; overwriting", objCmd:getCommand())
-    end
+function mike.commands.new(cmd, help)
+  if(mike.commands.exists(cmd)) then
+    mike.log.warn("Command '%s' already exists; overwriting", cmd:getCommand())
+  end
 
-    local tblSkeleton = {
-        -- data
-        ["strCmd"] = strCmd,
-        ["strHelp"] = strHelp or "",
+  local skeleton = {
+    -- data
+    ["cmd"] = cmd,
+    ["help"] = help or "No help available",
 
-        -- functions
-        ["getCommand"] = function(self) return self.strCmd end,
-        ["getHelp"] = function(self) return self.strHelp end,
-        ["run"] = function(self, objPl, strFirst, tblArgs)
-            -- TODO: logging?
-            self:onRun(objPl, strFirst, tblArgs)
-        end,
-        ["onRun"] = function(self, objPl, strFirst, tblArgs) end,
-        ["canUserRun"] = function(self, objPl)
-            return IsValid(objPl)
-        end,
-    }
-    tblSkeleton.__index = tblSkeleton
+    -- functions
+    ["getCommand"] = function(self) return self.cmd end,
+    ["getHelp"] = function(self) return self.help end,
+    ["run"] = function(self, pl, strFirst, args)
+      -- TODO: logging? probably not
+      self:onRun(pl, strFirst, args)
+    end,
+    ["onRun"] = function(self, pl, strFirst, args) end,
+    ["canUserRun"] = function(self, pl, cmd, args)
+      return mike.commands.error.NO_PERMISSION
+    end,
+  }
+  skeleton.__index = skeleton
 
-    local objCmd = {}
-    setmetatable(objCmd, tblSkeleton)
+  local cmd = {}
+  setmetatable(cmd, skeleton)
 
-    return objCmd
+  return cmd
 end
