@@ -9,7 +9,7 @@ mike.commands.error = {
 
 local function rootHandler(objPl, strCmd, tblArgs)
     if(table.Count(tblArgs) <= 0) then return end
-    
+
     local silent = strCmd == "mikey"
 
     local strArg = tblArgs[1]
@@ -52,7 +52,7 @@ end
 
 function mike.commands.exists(strCmd)
     if(strCmd == nil) then return false end
-    
+
     if(type(strCmd) ~= "string") then
         strCmd = strCmd:getCommand()
     end
@@ -64,7 +64,7 @@ function mike.commands.get(strCmd)
     if(mike.commands.exists(strCmd)) then
         return mike.commands.list[strCmd]
     end
-    
+
     return mike.commands.new(strCmd)
 end
 
@@ -72,7 +72,7 @@ function mike.commands.new(strCmd, strHelp)
     if(mike.commands.exists(objCmd)) then
         mike.log.warn("Command '%s' already exists; overwriting", objCmd:getCommand())
     end
-    
+
     local tblSkeleton = {
         -- data
         ["strCmd"] = strCmd,
