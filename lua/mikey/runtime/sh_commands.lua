@@ -10,7 +10,7 @@ mike.commands.error = {
 local function rootHandler(pl, cmd, args)
   if(table.Count(args) <= 0) then return end
 
-  local silent = (cmd == "mikey")
+  local silent = (string.lower(cmd) == "mikey")
 
   local arg = args[1]
 
@@ -35,7 +35,7 @@ local function rootHandler(pl, cmd, args)
       elseif(canRun == mike.commands.error.NOT_FOUND) then
         mike.log.error("Command not found")
       else
-        mike.log.error("Unknown error occurred ("..tostring(canRun)..")")
+        mike.log.error("Unknown error occurred (canRun: "..tostring(canRun)..")")
       end
     end
   else
@@ -72,7 +72,7 @@ end
 
 function mike.commands.new(cmd, help)
   if(mike.commands.exists(cmd)) then
-    mike.log.warn("Command '%s' already exists; overwriting", cmd:getCommand())
+    mike.log.warn("Command '%s' already exists; overwriting", (type(cmd) == "string" and cmd or cmd:getCommand()))
   end
 
   local skeleton = {
@@ -83,11 +83,11 @@ function mike.commands.new(cmd, help)
     -- functions
     ["getCommand"] = function(self) return self.cmd end,
     ["getHelp"] = function(self) return self.help end,
-    ["run"] = function(self, pl, strFirst, args)
+    ["run"] = function(self, pl, cmd, args)
       -- TODO: logging? probably not
-      self:onRun(pl, strFirst, args)
+      self:onRun(pl, cmd, args)
     end,
-    ["onRun"] = function(self, pl, strFirst, args) end,
+    ["onRun"] = function(self, pl, cmd, args) end,
     ["canUserRun"] = function(self, pl, cmd, args)
       return mike.commands.error.NO_PERMISSION
     end,
