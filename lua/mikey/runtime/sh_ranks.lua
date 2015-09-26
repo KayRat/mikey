@@ -92,5 +92,13 @@ pl.GetUserGroup = pl.getUserGroup
 pl.IsUserGroup = pl.isUserGroup
 
 hook.Add("InitPostEntity", "mikey.ranks.loadRanks", function()
+  hook.Call("mikey.ranks.preLoad", nil)
   hook.Call("mikey.ranks.load", nil)
+  hook.Call("mikey.ranks.postLoad", nil)
+end)
+
+hook.Add("mikey.ranks.postLoad", "checkForRanks", function()
+  if(not mikey.ranks.getDefault()) then
+    mikey.log.error("No default rank found; no ranks loaded. Nothing will work")
+  end
 end)
