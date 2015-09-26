@@ -12,7 +12,7 @@ local function loadDirectory(strDir)
         AddCSLuaFile("mikey/"..strDir.."/"..v)
     elseif(SERVER and strPrefix == "sv_") then
         include("mikey/"..strDir.."/"..v)
-    else
+    elseif(string.sub(v, 1, 1) ~= "_") then
         include("mikey/"..strDir.."/"..v)
         AddCSLuaFile("mikey/"..strDir.."/"..v)
     end
