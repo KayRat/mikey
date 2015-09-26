@@ -22,10 +22,10 @@ net.Receive("mike.plugins.netMessage", function(len, pl)
   mike.plugins.netMessages[msgName](data)
 end)
 
-function mike.plugins.new(strName)
-    local tblSkeleton = {
+function mike.plugins.new(name)
+    local skeleton = {
         -- data
-        ["name"] = strName,
+        ["name"] = name,
 
         -- functions
         ["getName"] = function(self) return self.name end,
@@ -43,27 +43,27 @@ function mike.plugins.new(strName)
         end,
     }
 
-    tblSkeleton["handleNetMessage"] = function(self, msgName, callback)
+    skeleton["handleNetMessage"] = function(self, msgName, callback)
       mike.plugins.netMessages[self:getName()] = mike.plugins.netMessages[self:getName()] or {}
       mike.plugins.netMessages[self:getName()][msgName] = callback
     end
 
-    tblSkeleton["removeNetMessage"] = function(self, msgName)
+    skeleton["removeNetMessage"] = function(self, msgName)
       if(mike.plugins.netMessages[self:getName()]) then
         mike.plugins.netMessages[self:getName()][msgName] = nil
       end
     end
 
-    tblSkeleton.__index = tblSkeleton
+    skeleton.__index = skeleton
 
     local objPlugin = {}
-    setmetatable(objPlugin, tblSkeleton)
+    setmetatable(objPlugin, skeleton)
 
     return objPlugin
 end
 
-function mike.plugins.get(strName)
-    return mike.plugins.list[strName] or mike.plugins.new(strName)
+function mike.plugins.get(name)
+    return mike.plugins.list[name] or mike.plugins.new(name)
 end
 
 function mike.plugins.add(objPlugin)
