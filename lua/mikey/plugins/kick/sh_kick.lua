@@ -1,5 +1,5 @@
-local kickPlugin = mike.plugins.get("Kick")
-local kickCmd = mike.commands.get("kick")
+local kickPlugin = mikey.plugins.get("Kick")
+local kickCmd = mikey.commands.get("kick")
 
-mike.plugins.add(kickPlugin)
-mike.commands.add(kickCmd)
+mikey.plugins.add(kickPlugin)
+mikey.commands.add(kickCmd)

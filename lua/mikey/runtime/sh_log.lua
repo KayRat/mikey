@@ -1,53 +1,53 @@
-mike = mike or {}
-mike.log = mike.log or {}
+mikey = mikey or {}
+mikey.log = mikey.log or {}
 
 local function out(str)
   -- TODO: file and/or database logging
 end
 
-function mike.log.warn(str, ...)
+function mikey.log.warn(str, ...)
     str = string.format(str, ...)
 
     MsgC(unpack({
-        mike.colors.outside,  "[",
-        color_white,          "MIKEY",
-        mike.colors.outside,  "] ",
-        mike.colors.warning,  "WARN: ",
+        mikey.colors.outside,  "[",
+        color_white,          "mikey",
+        mikey.colors.outside,  "] ",
+        mikey.colors.warning,  "WARN: ",
         color_white,          str.."\n",
     }))
 
-    str = "[MIKEY] WARN: "..str
+    str = "[mikey] WARN: "..str
     out(str)
 end
 
-function mike.log.info(str, ...)
+function mikey.log.info(str, ...)
     str = string.format(str, ...)
 
     MsgC(unpack({
-        mike.colors.outside,  "[",
-        color_white,          "MIKEY",
-        mike.colors.outside,  "] ",
-        mike.colors.info,     "INFO: ",
+        mikey.colors.outside,  "[",
+        color_white,          "mikey",
+        mikey.colors.outside,  "] ",
+        mikey.colors.info,     "INFO: ",
         color_white,          str.."\n",
     }))
 
-    str = "[MIKEY] INFO: "..str
+    str = "[mikey] INFO: "..str
 
     out(str)
 end
 
-function mike.log.error(str, ...)
+function mikey.log.error(str, ...)
     str = string.format(str, ...).."\n"
 
     MsgC(unpack({
-        mike.colors.outside,  "[",
-        color_white,          "MIKEY",
-        mike.colors.outside,  "] ",
-        mike.colors.error,    "ERROR: ",
+        mikey.colors.outside,  "[",
+        color_white,          "mikey",
+        mikey.colors.outside,  "] ",
+        mikey.colors.error,    "ERROR: ",
         color_white,          str,
     }))
 
-    str = "[MIKEY] ERROR: "..str
+    str = "[mikey] ERROR: "..str
 
     out(str)
 end

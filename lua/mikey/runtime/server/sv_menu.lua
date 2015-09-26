@@ -1,9 +1,9 @@
-util.AddNetworkString("mike.commands.menu.open")
+util.AddNetworkString("mikey.commands.menu.open")
 
-local objMenu = mike.commands.new("menu", "Show the menu")
+local objMenu = mikey.commands.new("menu", "Show the menu")
 
 function objMenu:canUserRun(objPl)
-    if(not IsValid(objPl)) then return mike.commands.error.NO_CONSOLE end
+    if(not IsValid(objPl)) then return mikey.commands.error.NO_CONSOLE end
 
     return true
 end
@@ -11,7 +11,7 @@ end
 function objMenu:onRun(objPl, strFirst, tblArgs)
     print("[SERVER] onRun called by", objPl, tblArgs and tblArgs[1] or nil)
 
-    net.Start("mike.commands.menu.open")
+    net.Start("mikey.commands.menu.open")
         if(strFirst and string.len(strFirst) > 0) then
             net.WriteBool(true)
             net.WriteString(strFirst)
@@ -21,4 +21,4 @@ function objMenu:onRun(objPl, strFirst, tblArgs)
     net.Send(objPl)
 end
 
-mike.commands.add(objMenu)
+mikey.commands.add(objMenu)

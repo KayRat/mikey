@@ -1,28 +1,28 @@
-mike = mike or {}
-mike.plugins = mike.plugins or {}
-mike.plugins.list = mike.plugins.list or {}
-mike.plugins.netMessages = mike.plugins.netMessages or {}
+mikey = mikey or {}
+mikey.plugins = mikey.plugins or {}
+mikey.plugins.list = mikey.plugins.list or {}
+mikey.plugins.netMessages = mikey.plugins.netMessages or {}
 
 if(SERVER) then
-  util.AddNetworkString("mike.plugins.netMessage")
+  util.AddNetworkString("mikey.plugins.netMessage")
 end
 
-net.Receive("mike.plugins.netMessage", function(len, pl)
+net.Receive("mikey.plugins.netMessage", function(len, pl)
   local msgName = net.ReadString()
 
-  if(not IsValid(mike.plugins.netMessages[msgName])) then
-    mike.log.error("Tried to handle net message '"..msgName.."' without handler")
+  if(not IsValid(mikey.plugins.netMessages[msgName])) then
+    mikey.log.error("Tried to handle net message '"..msgName.."' without handler")
     return
   end
 
   local data = net.ReadTable()
   data["sender"] = pl
 
-  mike.log.info("Handling net message '"..msgName.."'"..(SERVER and " from "..pl:Nick()))
-  mike.plugins.netMessages[msgName](data)
+  mikey.log.info("Handling net message '"..msgName.."'"..(SERVER and " from "..pl:Nick()))
+  mikey.plugins.netMessages[msgName](data)
 end)
 
-function mike.plugins.new(name)
+function mikey.plugins.new(name)
     local skeleton = {
         -- data
         ["name"] = name,
@@ -31,7 +31,7 @@ function mike.plugins.new(name)
         ["getName"] = function(self) return self.name end,
 
         ["sendNetMessage"] = function(self, target, data)
-          net.Start("mike.plugins.netMessage")
+          net.Start("mikey.plugins.netMessage")
             net.WriteString(self:getName())
             net.WriteTable(SERVER and data or target)
 
@@ -44,13 +44,13 @@ function mike.plugins.new(name)
     }
 
     skeleton["handleNetMessage"] = function(self, msgName, callback)
-      mike.plugins.netMessages[self:getName()] = mike.plugins.netMessages[self:getName()] or {}
-      mike.plugins.netMessages[self:getName()][msgName] = callback
+      mikey.plugins.netMessages[self:getName()] = mikey.plugins.netMessages[self:getName()] or {}
+      mikey.plugins.netMessages[self:getName()][msgName] = callback
     end
 
     skeleton["removeNetMessage"] = function(self, msgName)
-      if(mike.plugins.netMessages[self:getName()]) then
-        mike.plugins.netMessages[self:getName()][msgName] = nil
+      if(mikey.plugins.netMessages[self:getName()]) then
+        mikey.plugins.netMessages[self:getName()][msgName] = nil
       end
     end
 
@@ -62,10 +62,10 @@ function mike.plugins.new(name)
     return objPlugin
 end
 
-function mike.plugins.get(name)
-    return mike.plugins.list[name] or mike.plugins.new(name)
+function mikey.plugins.get(name)
+    return mikey.plugins.list[name] or mikey.plugins.new(name)
 end
 
-function mike.plugins.add(objPlugin)
-    mike.plugins.list[objPlugin:getName()] = objPlugin
+function mikey.plugins.add(objPlugin)
+    mikey.plugins.list[objPlugin:getName()] = objPlugin
 end
