@@ -2,7 +2,7 @@ mike = mike or {}
 mike.log = mike.log or {}
 
 local function out(str)
-  -- TODO: file and database logging
+  -- TODO: file and/or database logging
 end
 
 function mike.log.warn(str, ...)
@@ -21,7 +21,7 @@ function mike.log.warn(str, ...)
 end
 
 function mike.log.info(str, ...)
-    str = "[MIKEY] INFO: "..string.format(str, ...)
+    str = string.format(str, ...)
 
     MsgC(unpack({
         mike.colors.outside,  "[",
