@@ -18,7 +18,7 @@ hook.Add("PlayerSay", "mikey.pluigns.adminchat", function(ply, text, team)
         ["message"] = text,
       })
     else
-      -- TODO: error msg
+      ply:sendMessage(mikey.colors.error, "[!] ", color_white, "You must enter a message to send to staff members!")
     end
 
     return ""
