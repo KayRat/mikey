@@ -2,20 +2,6 @@ local kickPlugin = mikey.plugins.get("Kick")
 local kickCmd = mikey.commands.get("kick")
 local kickIDCmd = mikey.commands.get("kickid")
 
-kickCmd.canUserRun = function(self, pl, cmd, args)
-  if(not IsValid(pl)) then
-    return mikey.commands.error.NO_CONSOLE
-  end
-
-  if(pl:hasPermission("kick")) then
-    return true
-  end
-
-  return mikey.commands.error.NO_PERMISSION
-end
-
-kickIDCmd.canUserRun = kickCmd.canUserRun
-
 local function doKick(admin, target, args)
   table.remove(args, 1)
 

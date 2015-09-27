@@ -10,19 +10,17 @@ mikey.commands.error = {
 local function rootHandler(pl, cmd, args)
   if(table.Count(args) <= 0) then return end
 
-  local silent = (string.lower(cmd) == "mikey")
+  local silent = (string.lower(cmd) == "mike")
 
   local arg = args[1]
 
   if(mikey.commands.exists(arg)) then
     local targetCmd = mikey.commands.get(arg)
-    PrintTable(targetCmd)
 
     local targetCmdArgs = table.Copy(args)
     table.remove(args, 1)
 
     if(not targetCmd) then mikey.log.error("No command??? Huh?") return end
-
     local canRun = targetCmd:canUserRun(pl, arg, targetCmdArgs)
 
     if(canRun == true) then
@@ -45,7 +43,7 @@ end
 
 if(SERVER) then
   concommand.Add("mikey", rootHandler, nil, "mikey's Cereal Shack")
-  concommand.Add("mikey", rootHandler, nil, "mikey's ~Silent~ Cereal Shack")
+  concommand.Add("mike", rootHandler, nil, "mikey's ~Silent~ Cereal Shack")
 end
 
 function mikey.commands.add(cmd)

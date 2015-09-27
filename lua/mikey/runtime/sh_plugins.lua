@@ -29,6 +29,7 @@ function mikey.plugins.new(name)
 
         -- functions
         ["getName"] = function(self) return self.name end,
+        ["canUserRun"] = function(self, pl) return IsValid(pl) end,
 
         ["sendNetMessage"] = function(self, target, data)
           net.Start("mikey.plugins.netMessage")
