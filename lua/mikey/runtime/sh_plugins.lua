@@ -8,18 +8,24 @@ if(SERVER) then
 end
 
 net.Receive("mikey.plugins.netMessage", function(len, pl)
+  local pluginName = net.ReadString()
   local msgName = net.ReadString()
 
-  if(not IsValid(mikey.plugins.netMessages[msgName])) then
-    mikey.log.error("Tried to handle net message '"..msgName.."' without handler")
+  if(not mikey.plugins.exists(pluginName)) then
+    mikey.log.error("Tried to handle net message for invlaid plugin '"..pluginName.."'")
+    return
+  end
+
+  if(mikey.plugins.netMessages[pluginName][msgName] == nil) then
+    mikey.log.error("Tried to handle net message '"..pluginName.."' with no handler for alias '"..msgName.."'")
     return
   end
 
   local data = net.ReadTable()
   data["sender"] = pl
 
-  mikey.log.info("Handling net message '"..msgName.."'"..(SERVER and " from "..pl:Nick()))
-  mikey.plugins.netMessages[msgName](data)
+  mikey.log.info("Handling net message '"..msgName.."'"..(SERVER and " from "..pl:Nick() or ""))
+  mikey.plugins.netMessages[pluginName][msgName](data)
 end)
 
 function mikey.plugins.new(name)
@@ -31,9 +37,10 @@ function mikey.plugins.new(name)
         ["getName"] = function(self) return self.name end,
         ["canUserRun"] = function(self, pl) return IsValid(pl) end,
 
-        ["sendNetMessage"] = function(self, target, data)
+        ["sendNetMessage"] = function(self, msgName, target, data)
           net.Start("mikey.plugins.netMessage")
             net.WriteString(self:getName())
+            net.WriteString(msgName)
             net.WriteTable(SERVER and data or target)
 
           if(SERVER) then
@@ -61,6 +68,10 @@ function mikey.plugins.new(name)
     setmetatable(objPlugin, skeleton)
 
     return objPlugin
+end
+
+function mikey.plugins.exists(name)
+  return mikey.plugins.list[name] ~= nil
 end
 
 function mikey.plugins.get(name)
