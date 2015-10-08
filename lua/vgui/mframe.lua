@@ -93,6 +93,7 @@ function PANEL:PerformLayout(iWidth, iHeight)
   self.btnClose:SetPos(iWidth-self.btnClose:GetWide()-1, 0)
 
   self.m_pnlCanvas.m_pnlPlayerList:SetWide(2*(iWidth/3))
+  self.m_pnlCanvas:PerformLayout()
 end
 
 function PANEL:Paint(w, h)

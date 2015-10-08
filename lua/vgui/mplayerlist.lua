@@ -17,7 +17,7 @@ end
 
 function PANEL:InvalidateLayout()
   local pnlPlayer
-  local iCardWidth, iCardHeight = 100, 128
+  local iCardWidth, iCardHeight = self:GetWide()/3-6, 128
 
   for k,v in pairs(player.GetAll()) do
     pnlPlayer = self.m_pnlIconLayout:Add("MPlayerCard")
