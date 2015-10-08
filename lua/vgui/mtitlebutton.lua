@@ -13,7 +13,7 @@ function PANEL:SetColorScheme(objBaseColor)
     self.colors.mouseDown = Color(self.colors.hover.r-30, self.colors.hover.g-30, self.colors.hover.b-30)
 end
 
-function PANEL:InvertColorOnHover(bInvert)
+function PANEL:SetInvertColorOnHover(bInvert)
     self.invertColor = bInvert
 end
 
@@ -58,7 +58,7 @@ function PANEL:Paint(w, h)
         surface.SetDrawColor(self.colors.normal)
     end
 
-    surface.DrawRect(1, 1, w-1, h-1)
+    surface.DrawRect(1, 1, w-1, h-2)
 end
 
 vgui.Register("MTitleButton", PANEL, "DButton")
