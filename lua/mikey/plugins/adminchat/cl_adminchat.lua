@@ -1,11 +1,7 @@
-local adminChat = mikey.plugins.get("Admin Chat")
+mikey.network.setHandler("adminchat.message", function(objData)
+  local objFrom = objData["__SENDER"]
+  local strText = objData["message"]
 
-adminChat:handleNetMessage("chatmessage", function(data)
-  local from = data["from"]
-  local text = data["message"]
-
-  --chat.AddText(Color(100, 200, 100), "→  ", team.GetColor(from:Team()), from:Nick()..": ", color_white, text)
-  chat.AddText(team.GetColor(from:Team()), from:Nick(), color_white, " to staff: ", color_white, text)
+  --chat.AddText(Color(100, 200, 100), "→  ", team.GetColor(objFrom:Team()), objFrom:Nick()..": ", color_white, strText)
+  chat.AddText(team.GetColor(objFrom:Team()), objFrom:Nick(), color_white, " to staff: ", color_white, strText)
 end)
-
-mikey.plugins.add(adminChat)

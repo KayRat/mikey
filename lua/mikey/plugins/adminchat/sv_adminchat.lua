@@ -1,28 +1,28 @@
-local adminChat = mikey.plugins.get("Admin Chat")
+hook.Add("PlayerSay", "mikey.plugins.adminchat", function(objPl, strText, iTeam)
+  if(string.sub(strText, 1, 1) == "@") then
+    strText = string.sub(strText, 2)
 
-hook.Add("PlayerSay", "mikey.pluigns.adminchat", function(ply, text, team)
-  if(string.sub(text, 1, 1) == "@") then
-    text = string.sub(text, 2)
-
-    if(string.len(text) > 0) then
-      local to = {ply}
+    if(string.len(strText) > 0) then
+      local tblTargets = {objPl}
 
       for k,v in pairs(player.GetAll()) do
-        if(v ~= ply and v:isMod()) then
-          table.insert(to, v)
+        if(v ~= objPl and v:isMod()) then
+          table.insert(tblTargets, v)
         end
       end
 
-      adminChat:sendNetMessage("chatmessage", to, {
-        ["from"] = ply,
-        ["message"] = text,
+      mikey.network.sendMessage({
+        ["name"]  = "adminchat.message",
+        ["to"]    = tblTargets,
+        ["from"]  = objPl,
+        ["data"]  = {
+          ["message"] = strText,
+        }
       })
     else
-      ply:sendMessage(mikey.colors.error, "[!] ", color_white, "You must enter a message to send to staff members!")
+      objPl:sendMessage(mikey.colors.error, "[!] ", color_white, "You must enter a message to send to staff members!")
     end
 
     return ""
   end
 end)
-
-mikey.plugins.add(adminChat)

@@ -1,4 +1,3 @@
-local kickPlugin = mikey.plugins.get("Kick")
 local kickCmd = mikey.commands.get("kick")
 local kickIDCmd = mikey.commands.get("kickid")
 
@@ -41,6 +40,5 @@ kickIDCmd.onRun = function(self, pl, cmd, args)
   doKick(pl, target, args) -- TODO: proper logging
 end
 
-mikey.plugins.add(kickPlugin)
 mikey.commands.add(kickCmd)
 mikey.commands.add(kickIDCmd)
