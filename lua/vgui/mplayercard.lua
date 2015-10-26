@@ -119,6 +119,12 @@ end
 
 function PANEL:SetSelected(bSelected)
   self.m_Selected = bSelected
+
+  if(bSelected) then
+    self:GetParent():GetParent():GetParent():OnPlayerSelected(self:GetPlayer(), self)
+  else
+    self:GetParent():GetParent():GetParent():OnPlayerDeselected(self:GetPlayer(), self)
+  end
 end
 
 function PANEL:IsSelected()

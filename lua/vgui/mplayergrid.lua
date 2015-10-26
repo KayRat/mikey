@@ -7,6 +7,8 @@ function PANEL:Init()
   pnlIconLayout:Dock(TOP)
   pnlIconLayout:SetSpaceX(4)
   pnlIconLayout:SetSpaceY(4)
+  pnlIconLayout.OnPlayerSelected = self.OnPlayerSelected
+  pnlIconLayout.OnPlayerDeselected = self.OnPlayerDeselected
 
   self.m_pnlIconLayout = pnlIconLayout
 end
@@ -19,8 +21,10 @@ function PANEL:PerformLayout(iWidth, iHeight)
   end
 end
 
-function PANEL:CreatePlayerList()
-  for k,v in pairs(player.GetAll()) do
+function PANEL:CreatePlayerList(objSortMethod)
+  local tblMaster = objSortMethod and objSortMethod() or player.GetAll() -- TODO: group by team, sort by player name
+
+  for k,v in pairs(tblMaster) do
     self:AddPlayerCard(v)
   end
 end
@@ -31,7 +35,7 @@ function PANEL:AddPlayerCard(objPl)
   local pnl = self.m_pnlIconLayout:Add("MPlayerCard")
   pnl:SetSize(iCardWidth, iCardHeight)
   pnl:SetPlayer(objPl)
-  --pnl:SetSelected(true)
+  pnl:SetParent(self.m_pnlIconLayout)
 end
 
 function PANEL:Paint(w, h)

@@ -46,13 +46,24 @@ net.Receive("mikey.commands.menu.open", function(iLen)
       pnlPlayerList:Dock(LEFT)
       pnlPlayerList:InvalidateParent(true)
       pnlPlayerList:CreatePlayerList()
+      pnlPlayerList.OnPlayerSelected = function(self, objPl, objPanel)
+        pnlActionList:OnPlayerSelected(objPl, objPanel)
+      end
+      pnlPlayerList.OnPlayerDeselected = function(self, objPl, objPanel)
+        pnlActionList:OnPlayerDeselected(objPl, objPanel)
+      end
     end
+    -- end player list
 
     do -- action list
       pnlActionList = vgui.Create("MActionList", pnlCanvas)
       pnlActionList:DockMargin(0, 0, 0, 0)
       pnlActionList:Dock(FILL)
       pnlActionList:InvalidateParent(true)
+      pnlActionList.OnPlayerSelected = function(self, objPl, objPanel)
+      end
+      pnlActionList.OnPlayerDeselected = function(self, objPl, objPanel)
+      end
     end
 
     pnlCanvas.m_pnlPlayerList = pnlPlayerList

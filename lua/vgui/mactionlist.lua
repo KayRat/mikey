@@ -3,6 +3,9 @@ local PANEL = {}
 function PANEL:Init()
 end
 
+function PANEL:PerformLayout(iWidth, iHeight)
+end
+
 function PANEL:Paint(w, h)
   surface.SetDrawColor(0, 0, 0)
   surface.DrawOutlinedRect(0, 0, w, h)
