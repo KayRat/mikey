@@ -1,3 +1,6 @@
+mikey = mikey or {}
+mikey.menu = mikey.menu or {}
+
 local objMenu = nil
 local tblTitles = {
   "what's cookin?",
@@ -8,7 +11,7 @@ local tblTitles = {
   "I hope Aaron isn't here",
   "super duper hacky version",
   "assistant (to the) regional manager",
-  "isn't this a waste of CPU?",
+  "isn't this title a waste of CPU?",
 }
 
 net.Receive("mikey.menu.refresh", function(iLen)
@@ -24,6 +27,7 @@ net.Receive("mikey.commands.menu.open", function(iLen)
     objMenu = vgui.Create("MFrame")
     objMenu:SetTitle("mike's cereal shack - "..table.Random(tblTitles))
     objMenu:SetSize(825, 525)
+    objMenu:SetSizable(true)
     objMenu:Center()
 
     local pnlCanvas = vgui.Create("DPanel", objMenu)
@@ -44,7 +48,7 @@ net.Receive("mikey.commands.menu.open", function(iLen)
       pnlPlayerList:DockPadding(4, 4, 4, 4)
       pnlPlayerList:SetWide(2*(pnlCanvas:GetWide()/2.8))
       pnlPlayerList:Dock(LEFT)
-      pnlPlayerList:InvalidateParent(true)
+      --pnlPlayerList:InvalidateParent(true)
       pnlPlayerList:CreatePlayerList()
       pnlPlayerList.OnPlayerSelected = function(self, objPl, objPanel)
         pnlActionList:OnPlayerSelected(objPl, objPanel)
@@ -52,23 +56,17 @@ net.Receive("mikey.commands.menu.open", function(iLen)
       pnlPlayerList.OnPlayerDeselected = function(self, objPl, objPanel)
         pnlActionList:OnPlayerDeselected(objPl, objPanel)
       end
-    end
-    -- end player list
+    end -- end player list
 
     do -- action list
       pnlActionList = vgui.Create("MActionList", pnlCanvas)
       pnlActionList:DockMargin(0, 0, 0, 0)
       pnlActionList:Dock(FILL)
-      pnlActionList:InvalidateParent(true)
-      pnlActionList.OnPlayerSelected = function(self, objPl, objPanel)
-      end
-      pnlActionList.OnPlayerDeselected = function(self, objPl, objPanel)
-      end
-    end
+      --pnlActionList:InvalidateParent(true)
+    end -- end action list
 
     pnlCanvas.m_pnlPlayerList = pnlPlayerList
     pnlCanvas.m_pnlActionList = pnlActionList
-
     objMenu.m_pnlCanvas = pnlCanvas
 
     objMenu:MakePopup()
