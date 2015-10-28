@@ -20,13 +20,9 @@ local PANEL = {}
 
 PANEL.colors = {
   ["frame"] = {
-    ["background"] = Color(220, 220, 220),
-    ["outline"] = Color(80, 80, 80),
+    ["background"] = Color(220, 220, 220, 255),
+    ["outline"] = Color(50, 50, 50, 255),
   },
-
-  ["title"] = {
-    ["background"] = Color(245, 245, 245)
-  }
 }
 
 PANEL.titleBar = {
@@ -45,10 +41,11 @@ function PANEL:Init()
     self.btnClose:SetText("X")
     self.btnClose.DoClick = function(btn) self:Close() end
     self.btnClose:SetInvertColorOnHover(true)
+    local objDarker = utils.darkenColor(mikey.colors.menus.secondary)
     self.btnClose.colors = {
-        ["normal"] = self.colors.title.background,
-        ["hover"] = Color(214, 42, 42),
-        ["mouseDown"] = Color(174, 12, 12),
+        ["normal"] = mikey.colors.menus.primary,
+        ["hover"] = objDarker,
+        ["mouseDown"] = utils.darkenColor(objDarker),
     }
   end
 
@@ -74,7 +71,7 @@ function PANEL:Paint(w, h)
   derma.SkinHook("Paint", "Frame", self, w, h)
 
   -- frame title bar
-  surface.SetDrawColor(self.colors.title.background)
+  surface.SetDrawColor(mikey.colors.menus.primary)
   surface.DrawRect(1, 1, w-2, self.titleBar.height)
 
   -- frame background

@@ -1,4 +1,5 @@
 local PANEL = {}
+PANEL.m_SelectedPlayers = {}
 
 function PANEL:Init()
   local pnlIconLayout = vgui.Create("DIconLayout", self)
@@ -21,7 +22,33 @@ function PANEL:PerformLayout(iWidth, iHeight)
   end
 end
 
+function PANEL:OnPlayerSelected(objPl, objPanel)
+  self:SetPlayerSelected(objPl, true)
+end
+
+function PANEL:OnPlayerDeselected(objPl, objPanel)
+  self:SetPlayerSelected(objPl, false)
+end
+
+function PANEL:GetSelectedPlayers()
+  return table.Copy(self.m_SelectedPlayers)
+end
+
+function PANEL:SetPlayerSelected(objPl, bSelected)
+  if(bSelected) then
+    self.m_SelectedPlayers[objPl:UniqueID()] = true
+  else
+    self.m_SelectedPlayers[objPl:UniqueID()] = nil
+  end
+end
+
+function PANEL:ClearPlayerList()
+  self.m_SelectedPlayers = {}
+  self.m_pnlIconLayout:Clear()
+end
+
 function PANEL:CreatePlayerList(objSortMethod)
+  self:ClearPlayerList()
   local tblMaster = objSortMethod and objSortMethod() or player.GetAll() -- TODO: group by team, sort by player name
 
   for k,v in pairs(tblMaster) do
