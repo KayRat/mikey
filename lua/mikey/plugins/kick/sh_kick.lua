@@ -1,6 +1,8 @@
 PLUGIN["Menu"] = {
-  ["DisplayName"] = "Kick",
-  ["Icon"]        = "icon16/disconnect",
+  ["Category"]      = mikey.menu.category.ADMIN,
+  ["DisplayName"]   = "Kick",
+  ["Icon"]          = "icon16/disconnect.png",
+  ["SingleSelect"]  = false,
 }
 
 local kickCmd = mikey.commands.get("kick")
@@ -19,8 +21,3 @@ local function canUserRun(self, pl, cmd, args)
 end
 
 PLUGIN.canUserRun = canUserRun
-kickCmd.canUserRun = canUserRun
-kickIDCmd.canUserRun = canUserRun
-
-mikey.commands.add(kickCmd)
-mikey.commands.add(kickIDCmd)
