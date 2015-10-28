@@ -43,12 +43,12 @@ mikey.ranks.create = function(rankName, weight, aliases)
 
   local skeleton = {
     -- data
-    ["rankName"] = rankName,
-    ["weight"] = weight,
+    ["__rankName"] = rankName,
+    ["__weight"] = weight,
 
     -- functions
-    ["getName"] = function(self) return self.rankName end,
-    ["getWeight"] = function(self) return self.weight end,
+    ["getName"] = function(self) return self.__rankName end,
+    ["getWeight"] = function(self) return self.__weight end,
   }
 
   skeleton.__index = skeleton
