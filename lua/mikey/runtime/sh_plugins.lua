@@ -3,21 +3,21 @@ mikey.plugins = mikey.plugins or {}
 mikey.plugins.list = mikey.plugins.list or {}
 
 local function createNewPlugin(name)
-    local skeleton = {
-        -- data
-        ["name"] = name,
+  local skeleton = {
+    -- data
+    ["name"] = name,
 
-        -- functions
-        ["getName"] = function(self) return self.name end,
-        ["canUserRun"] = function(self, pl) return IsValid(pl) end,
-    }
+    -- functions
+    ["getName"] = function(self) return self.name end,
+    ["canUserRun"] = function(self, pl) return IsValid(pl) end,
+  }
 
-    skeleton.__index = skeleton
+  skeleton.__index = skeleton
 
-    local objPlugin = {}
-    setmetatable(objPlugin, skeleton)
+  local objPlugin = {}
+  setmetatable(objPlugin, skeleton)
 
-    return objPlugin
+  return objPlugin
 end
 
 function mikey.plugins.exists(name)
@@ -26,6 +26,18 @@ end
 
 function mikey.plugins.get(name)
   return mikey.plugins.list[name] or createNewPlugin(name)
+end
+
+function mikey.plugins.getAll(objFilter)
+  local tbl = {}
+
+  for k,v in pairs(mikey.plugins.list) do
+    if(not objFilter or (v["Menu"] and v["Menu"]["Category"] and v["Menu"]["Category"] == objFilter)) then
+      table.insert(tbl, v)
+    end
+  end
+
+  return tbl
 end
 
 function mikey.plugins.commit(objPlugin)
