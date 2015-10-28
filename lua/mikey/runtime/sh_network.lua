@@ -4,17 +4,15 @@ mikey.network.handlers = mikey.network.handlers or {}
 
 if(SERVER) then util.AddNetworkString("mikey.network.transmit") end
 
-mikey.network.sendMessage = function(tblData)
-  tblData["data"]["__SENDER"] = tblData["from"]
-
+mikey.network.sendMessage = function(strName, objTo, tblData)
   net.Start("mikey.network.transmit")
-    net.WriteString(tblData["name"])
-    net.WriteTable(tblData["data"])
+    net.WriteString(strName)
+    net.WriteTable(SERVER and tblData or objTo)
 
   if(CLIENT) then
     net.SendToServer()
   else
-    net.Send(tblData["to"])
+    net.Send(objTo)
   end
 end
 
@@ -25,7 +23,6 @@ end
 net.Receive("mikey.network.transmit", function(iLen, objPl)
   local strName = net.ReadString()
   local objData = net.ReadTable()
-  objData["from"] = objData["from"] or objPl
 
   if(not mikey.network.handlers[strName]) then
     mikey.log.error("Network handler '"..strName.."' not found")
