@@ -2,30 +2,30 @@ mikey = mikey or {}
 mikey.plugins = mikey.plugins or {}
 mikey.plugins.list = mikey.plugins.list or {}
 
-local function createNewPlugin(name)
-  local skeleton = {
+local function createNewPlugin(strName)
+  local tblSkeleton = {
     -- data
-    ["name"] = name,
+    ["__name"] = strName,
 
     -- functions
-    ["getName"] = function(self) return self.name end,
-    ["canUserRun"] = function(self, pl) return IsValid(pl) end,
+    ["getName"] = function(self) return self.__name end,
+    ["canUserRun"] = function(self, objPl) return IsValid(objPl) end,
   }
 
-  skeleton.__index = skeleton
+  tblSkeleton.__index = tblSkeleton
 
   local objPlugin = {}
-  setmetatable(objPlugin, skeleton)
+  setmetatable(objPlugin, tblSkeleton)
 
   return objPlugin
 end
 
-function mikey.plugins.exists(name)
-  return mikey.plugins.list[name] ~= nil
+function mikey.plugins.exists(strName)
+  return mikey.plugins.list[strName] ~= nil
 end
 
-function mikey.plugins.get(name)
-  return mikey.plugins.list[name] or createNewPlugin(name)
+function mikey.plugins.get(strName)
+  return mikey.plugins.list[strName] or createNewPlugin(strName)
 end
 
 function mikey.plugins.getAll(objFilter)
