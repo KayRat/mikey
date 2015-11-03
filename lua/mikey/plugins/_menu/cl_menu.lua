@@ -40,7 +40,7 @@ net.Receive("mikey.commands.menu.open", function(iLen)
       surface.DrawRect(0, 0, iWidth, iHeight)
     end
 
-    local pnlPlayerList, pnlActionList
+    local pnlPlayerList, pnlActionList, pnlSettings
 
     do -- player list
       pnlPlayerList = vgui.Create("MPlayerGrid", pnlCanvas)
@@ -58,6 +58,12 @@ net.Receive("mikey.commands.menu.open", function(iLen)
       end
     end -- end player list
 
+    do -- settings
+      pnlSettings = vgui.Create("MSettings", pnlCanvas)
+      pnlSettings:DockMargin(0, 0, 0, 5)
+      pnlSettings:Dock(TOP)
+    end -- end settings
+
     do -- action list
       pnlActionList = vgui.Create("MActionList", pnlCanvas)
       pnlActionList:DockMargin(0, 0, 0, 0)
@@ -67,6 +73,7 @@ net.Receive("mikey.commands.menu.open", function(iLen)
 
     pnlCanvas.m_pnlPlayerList = pnlPlayerList
     pnlCanvas.m_pnlActionList = pnlActionList
+    pnlCanvas.m_pnlSettings = pnlSettings
     objMenu.m_pnlCanvas = pnlCanvas
 
     objMenu:MakePopup()
