@@ -6,9 +6,26 @@ function PANEL:Init()
   objSettings:Dock(FILL)
   objSettings.DoClick = function(selfButton)
     local objNoFunction = vgui.Create("MModal", self:GetParent():GetParent())
+    objNoFunction:SetTitle("information")
     objNoFunction:SetSize(150, 90)
     objNoFunction:Center()
-    objNoFunction:SetText("mikey settings aren't implemented yet! give us time!")
+
+    local objText = vgui.Create("DLabel", objNoFunction)
+    objText:Dock(FILL)
+    objText:SetTextColor(color_black)
+    objText:SetWrap(true)
+    objText:SetText("this feature is set for a feature release. check back soon!")
+
+    local objClose = vgui.Create("MButton", objNoFunction)
+    objClose:SetText("Close")
+    objClose.DoClick = function(selfButton)
+      objNoFunction:Close()
+    end
+    objClose:Dock(BOTTOM)
+
+    self.m_Text = objText
+    self.m_CloseButton = objClose
+
     objNoFunction:MakePopup()
   end
 

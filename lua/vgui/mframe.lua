@@ -63,26 +63,33 @@ function PANEL:PerformLayout(iWidth, iHeight)
   self.btnClose:SetPos(iWidth-self.btnClose:GetWide()-1, 0)
 end
 
-function PANEL:Paint(w, h)
+function PANEL:Paint(iWidth, iHeight)
   if(self.m_bBackgroundBlur) then
     Derma_DrawBackgroundBlur(self, self.m_fCreateTime)
   end
 
-  derma.SkinHook("Paint", "Frame", self, w, h)
+  derma.SkinHook("Paint", "Frame", self, iWidth, iHeight)
 
   -- frame title bar
   surface.SetDrawColor(mikey.colors.menus.primary)
-  surface.DrawRect(1, 1, w-2, self.titleBar.height)
+  surface.DrawRect(1, 1, iWidth-2, self.titleBar.height)
+
+  surface.SetDrawColor(color_black)
+  surface.DrawLine(1, self.titleBar.height, iWidth-2, self.titleBar.height+1)
 
   -- frame background
   surface.SetDrawColor(self.colors.frame.background)
-  surface.DrawRect(1, self.titleBar.height, w-2, h-self.titleBar.height-1)
+  surface.DrawRect(1, self.titleBar.height, iWidth-2, iHeight-self.titleBar.height-1)
 end
 
-function PANEL:PaintOver(w, h)
+function PANEL:PaintOver(iWidth, iHeight)
+  -- title bar underline
+  surface.SetDrawColor(color_black)
+  surface.DrawLine(1, self.titleBar.height, iWidth-2, self.titleBar.height)
+
   -- frame outline
   surface.SetDrawColor(self.colors.frame.outline)
-  surface.DrawOutlinedRect(0, 0, w, h)
+  surface.DrawOutlinedRect(0, 0, iWidth, iHeight)
 end
 
 vgui.Register("MFrame", PANEL, "DFrame")
