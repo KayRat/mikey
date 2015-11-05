@@ -5,6 +5,7 @@ PANEL.Colors = {
   ["Fun"]             = Color(235, 235, 125, 255),
   ["OnHover"]         = Color(125, 235, 125, 195),
 }
+PANEL.m_Scheme = "Normal"
 
 for k,v in pairs(PANEL.Colors) do
   local tblNewColor = table.Copy(v)
@@ -17,15 +18,23 @@ for k,v in pairs(PANEL.Colors) do
   PANEL.Colors[k.."Hover"] = tblNewColor
 end
 
+function PANEL:SetColorScheme(strScheme)
+  self.m_Scheme = strScheme
+end
+
+function PANEL:GetColorScheme()
+  return self.m_Scheme
+end
+
 function PANEL:Paint(iWidth, iHeight)
   do -- background
     surface.SetDrawColor(color_black)
     surface.DrawOutlinedRect(0, 0, iWidth, iHeight)
 
-    local objColor = self.Colors.Administration
+    local objColor = self.Colors[self:GetColorScheme()]
 
     if(self:IsHovered()) then
-      objColor = self.Colors.AdministrationHover
+      objColor = self.Colors[self:GetColorScheme().."Hover"]
     end
 
     surface.SetDrawColor(objColor)

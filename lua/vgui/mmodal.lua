@@ -5,6 +5,7 @@ function PANEL:Init()
   self:DoModal(true)
   self:SetTitle("Alert")
   self:DockPadding(4, 4, 4, 4)
+  self:DockMargin(5, 5, 5, 5)
 
   local objText = vgui.Create("DLabel", self)
   objText:Dock(FILL)
@@ -24,6 +25,9 @@ end
 
 function PANEL:SetText(strText)
   self.m_Text:SetText(strText)
+end
+
+function PANEL:PerformLayout(iWidth, iHeight)
 end
 
 vgui.Register("MModal", PANEL, "MFrame")
