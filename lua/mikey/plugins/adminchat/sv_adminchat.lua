@@ -11,13 +11,9 @@ hook.Add("PlayerSay", "mikey.plugins.adminchat", function(objPl, strText, iTeam)
         end
       end
 
-      mikey.network.sendMessage({
-        ["name"]  = "adminchat.message",
-        ["to"]    = tblTargets,
-        ["from"]  = objPl,
-        ["data"]  = {
-          ["message"] = strText,
-        }
+      mikey.network.send("adminchat.message", tblTargets, {
+        ["from"]    = objPl,
+        ["message"] = strText,
       })
     else
       objPl:sendMessage(mikey.colors.error, "[!] ", color_white, "You must enter a message to send to staff members!")

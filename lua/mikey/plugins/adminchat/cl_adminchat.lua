@@ -1,4 +1,4 @@
-mikey.network.setHandler("adminchat.message", function(objData)
+mikey.network.receive("adminchat.message", function(objData)
   local objFrom = objData["from"]
   local strText = objData["message"]
 

@@ -4,7 +4,7 @@ mikey.network.handlers = mikey.network.handlers or {}
 
 if(SERVER) then util.AddNetworkString("mikey.network.transmit") end
 
-mikey.network.sendMessage = function(strName, objTo, tblData)
+mikey.network.send = function(strName, objTo, tblData)
   net.Start("mikey.network.transmit")
     net.WriteString(strName)
     net.WriteTable(SERVER and tblData or objTo)
@@ -16,7 +16,7 @@ mikey.network.sendMessage = function(strName, objTo, tblData)
   end
 end
 
-mikey.network.setHandler = function(strName, objHandler)
+mikey.network.receive = function(strName, objHandler)
   mikey.network.handlers[strName] = objHandler
 end
 

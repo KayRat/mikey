@@ -11,7 +11,7 @@ local function doKick(admin, target, args)
   target:Kick("Kicked by "..admin:Nick()..": "..reason)
 end
 
-mikey.network.setHandler("kick.kickPlayer", function(objPl, tblData)
+mikey.network.receive("kick.kickPlayer", function(objPl, tblData)
   if(not tblData["targets"]) then
     mike.log.error("Received instruction to kick without any targets")
     return
