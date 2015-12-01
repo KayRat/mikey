@@ -1,6 +1,6 @@
 local PANEL = {}
 PANEL.Colors = {
-  ["Normal"]          = Color(125, 125, 235, 255),
+  ["Normal"]          = mikey.colors.alt,
   ["Administration"]  = Color(255, 125, 125, 255),
   ["Fun"]             = Color(235, 235, 125, 255),
   ["OnHover"]         = Color(125, 235, 125, 195),
