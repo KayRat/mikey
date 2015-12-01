@@ -13,9 +13,9 @@ local iPadding = 10
 local PANEL = {}
 PANEL.m_Selected = false
 PANEL.Colors = {
-  ["OnHover"]         = mikey.colors.menus.alt,
-  ["OnSelected"]      = mikey.colors.menus.alt2,
-  ["OnHoverSelected"] = mikey.colors.menus.alt2,
+  ["OnHover"]         = mikey.colors.alt,
+  ["OnSelected"]      = mikey.colors.alt2,
+  ["OnHoverSelected"] = mikey.colors.alt2,
   ["NotSelected"]     = color_black,
 }
 
