@@ -23,7 +23,7 @@ mikey.network.receive("joinleave.join", function(tblData)
       color_white,          "Player ",
       mikey.colors.alt3,    strNick,
       color_white,          "(",
-      mikey.colors.alt2,    strSteamID,
+      mikey.colors.alt3,    strSteamID,
       color_white,          ") has connected",
     }
   end
@@ -31,8 +31,14 @@ mikey.network.receive("joinleave.join", function(tblData)
   chat.AddText(unpack(tblMessage))
 end)
 
+
+local tblTranslate = {
+  ["Disconnect by user"]  = "disconnected",
+  ["Client timed out"]    = "timed out",
+  ["Connection closing"]  = "lost connection",
+}
+
 mikey.network.receive("joinleave.leave", function(tblData)
-  -- ←
   local strNick     = tblData["nick"]
   local strSteamID  = tblData["steamid"]
   local bIsBot      = tblData["bot"]
@@ -41,8 +47,15 @@ mikey.network.receive("joinleave.leave", function(tblData)
 
   local tblMessage = {}
 
-  if(bIsBot) then
-  end
+  --if(bIsBot) then return end
+
+  tblMessage = {
+    mikey.colors.secondary, "← ",
+    color_white,            "Player ",
+    mikey.colors.alt3,      strNick,
+    color_white,            " has ",
+    mikey.colors.secondary,  tblTranslate[strReason] or strReason,
+  }
 
   chat.AddText(unpack(tblMessage))
 end)
