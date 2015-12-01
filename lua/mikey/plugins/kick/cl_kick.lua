@@ -1,12 +1,11 @@
-PLUGIN.buildModal = function(self, menu, target)
-end
+local PLUGIN = mikey.plugins.get()
 
 PLUGIN.onMenuClick = function(self, objTargets)
   print("Menu clicked", objTargets)
 end
 
 PLUGIN.onMenuRightClick = function(self, objTargets)
-  mikey.network.sendMessage("kick.kickPlayer", {
+  mikey.network.send("kick.kickPlayer", {
     ["targets"] = objTargets,
     ["reason"]  = "Consider this a warning...don't do it again",
   })
