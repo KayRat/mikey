@@ -8,10 +8,12 @@ local function loadDirectory(strDir)
     local strRootDirName = tblSplit[1]
     local strChildDirName = tblSplit[2]
     local bIsPlugin = strRootDirName == "plugins" and strChildDirName ~= nil
+    local PLUGIN = nil
 
     if(bIsPlugin) then
-      _G["PLUGIN"] = mikey.plugins.get(strChildDirName)
-      _G["PLUGIN"]["__NAME"] = strChildDirName
+      PLUGIN = mikey.plugins.get(strChildDirName)
+      PLUGIN["__NAME"] = strChildDirName
+      mikey.plugins.set(PLUGIN)
     end
 
     local strPrefix = string.sub(v, 1, 3)
@@ -30,9 +32,7 @@ local function loadDirectory(strDir)
     end
 
     if(bIsPlugin) then
-      _G["PLUGIN"]["__NAME"] = strChildDirName -- just in case a plugin tries to override its name
-      mikey.plugins.commit(_G["PLUGIN"])
-      _G["PLUGIN"] = {}
+      mikey.plugins.commit(PLUGIN)
     end
   end
 
