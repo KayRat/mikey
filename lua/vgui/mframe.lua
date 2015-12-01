@@ -35,18 +35,12 @@ function PANEL:Init()
   self.lblTitle:SetFont("MikeDefault")
   self.lblTitle:SetTextColor(color_black)
 
-  -- close button
-  do
+  do -- close button
     self.btnClose = vgui.Create("MTitleButton", self)
     self.btnClose:SetText("X")
     self.btnClose.DoClick = function(btn) self:Close() end
     self.btnClose:SetInvertColorOnHover(true)
-    local objDarker = utils.darkenColor(mikey.colors.menus.secondary)
-    self.btnClose.colors = {
-        ["normal"] = mikey.colors.menus.primary,
-        ["hover"] = objDarker,
-        ["mouseDown"] = utils.darkenColor(objDarker),
-    }
+    self.btnClose:SetColorScheme(mikey.colors.secondary)
   end
 
   self:DockPadding(2, self.titleBar.height, 2, 2)
@@ -71,7 +65,7 @@ function PANEL:Paint(iWidth, iHeight)
   derma.SkinHook("Paint", "Frame", self, iWidth, iHeight)
 
   -- frame title bar
-  surface.SetDrawColor(mikey.colors.menus.primary)
+  surface.SetDrawColor(mikey.colors.primary)
   surface.DrawRect(1, 1, iWidth-2, self.titleBar.height)
 
   surface.SetDrawColor(color_black)
