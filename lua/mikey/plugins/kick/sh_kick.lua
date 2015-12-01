@@ -1,3 +1,5 @@
+local PLUGIN = mikey.plugins.get()
+
 PLUGIN["Menu"] = {
   ["Category"]      = mikey.menu.category.ADMIN,
   ["DisplayName"]   = "Kick",
@@ -8,16 +10,16 @@ PLUGIN["Menu"] = {
 local kickCmd = mikey.commands.get("kick")
 local kickIDCmd = mikey.commands.get("kickid")
 
-local function canUserRun(self, pl, cmd, args)
+local function CanUserRun(self, pl, cmd, args)
   if(not IsValid(pl)) then
     return mikey.permission.NO_CONSOLE
   end
 
-  if(pl:isMod()) then
+  if(pl:IsMod()) then
     return true
   end
 
   return mikey.permission.NONE
 end
 
-PLUGIN.canUserRun = canUserRun
+PLUGIN.CanUserRun = CanUserRun
