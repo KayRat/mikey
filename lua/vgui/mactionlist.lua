@@ -58,10 +58,14 @@ function PANEL:Init()
         objPluginButton:SetColorScheme(tblMenu["Category"])
       end
       objPluginButton.DoClick = function()
-        objThisPlugin:onMenuClick(self.m_SelectedPlayers)
+        if(objThisPlugin.onMenuClick) then
+          objThisPlugin:onMenuClick(self.m_SelectedPlayers)
+        end
       end
       objPluginButton.DoRightClick = function()
-        objThisPlugin:onMenuRightClick(self.m_SelectedPlayers)
+        if(objThisPlugin.onMenuRightClick) then
+          objThisPlugin:onMenuRightClick(self.m_SelectedPlayers)
+        end
       end
 
       objMenuCat:Add(objPluginButton)
