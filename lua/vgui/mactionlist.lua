@@ -41,6 +41,7 @@ function PANEL:Init()
 
     local objCatTitle = vgui.Create("DLabel", objMenuCat)
     objCatTitle:SetText(v)
+    objCatTitle:SetTextColor(color_black)
     objCatTitle:Dock(TOP)
 
     for k,v in pairs(tblPlugins) do
@@ -53,6 +54,9 @@ function PANEL:Init()
       objPluginButton:SetText(strText)
       objPluginButton:SetIcon(tblMenu["Icon"])
       objPluginButton:SetWide(80)
+      if(tblMenu["Category"] and objPluginButton.Colors[tblMenu["Category"]]) then
+        objPluginButton:SetColorScheme(tblMenu["Category"])
+      end
       objPluginButton.DoClick = function()
         objThisPlugin:onMenuClick(self.m_SelectedPlayers)
       end
