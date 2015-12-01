@@ -1,4 +1,4 @@
-local PLUGIN = PLUGIN
+local PLUGIN = mikey.plugins.get()
 local kickCmd = mikey.commands.get("kick")
 local kickIDCmd = mikey.commands.get("kickid")
 
