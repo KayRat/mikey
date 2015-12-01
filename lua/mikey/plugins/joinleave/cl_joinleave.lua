@@ -14,17 +14,18 @@ mikey.network.receive("joinleave.join", function(tblData)
     tblMessage = {
       mikey.colors.primary, "→ ",
       color_white,          "A silly bot named ",
-      mikey.colors.alt2,    strNick,
+      mikey.colors.alt,    strNick,
       color_white,          " has joined",
     }
   else
     tblMessage = {
       mikey.colors.primary, "→ ",
-      color_white,          "Player ",
-      mikey.colors.alt3,    strNick,
-      color_white,          " (",
-      mikey.colors.secondary,    strSteamID,
-      color_white,          ") has connected",
+      --color_white,            "Player ",
+      mikey.colors.primary,      strNick,
+      color_white,            " (",
+      mikey.colors.secondary, strSteamID,
+      color_white,            ") has ",
+      mikey.colors.alt,   "connected",
     }
   end
 
@@ -52,7 +53,7 @@ mikey.network.receive("joinleave.leave", function(tblData)
   tblMessage = {
     mikey.colors.secondary, "← ",
     color_white,            "Player ",
-    mikey.colors.alt3,      strNick,
+    mikey.colors.alt,      strNick,
     color_white,            " has ",
     mikey.colors.secondary,  tblTranslate[strReason] or strReason,
   }
