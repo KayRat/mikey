@@ -92,7 +92,7 @@ end
 
 pl.setRank = function(self, rank)
   if(not mikey.ranks.exists(rank)) then
-    mikey.log.error("Rank '"..rank.."' cannot be assigned to '"..self:Nick().."': not found")
+    mikey.log.error("Rank '"..rank.."' cannot be assigned to '"..self:Nick().."': rank not found")
     return
   end
 
@@ -123,6 +123,6 @@ end)
 
 hook.Add("mikey.ranks.postLoad", "checkForRanks", function()
   if(not mikey.ranks.getDefault()) then
-    mikey.log.error("No default rank found; no ranks loaded. Nothing will work")
+    mikey.log.error("No default rank found; no ranks loaded. Nothing will work, so you should probably fix that")
   end
 end)
