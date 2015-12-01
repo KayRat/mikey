@@ -22,8 +22,8 @@ mikey.network.receive("joinleave.join", function(tblData)
       mikey.colors.primary, "→ ",
       color_white,          "Player ",
       mikey.colors.alt3,    strNick,
-      color_white,          "(",
-      mikey.colors.alt3,    strSteamID,
+      color_white,          " (",
+      mikey.colors.secondary,    strSteamID,
       color_white,          ") has connected",
     }
   end
@@ -33,7 +33,7 @@ end)
 
 
 local tblTranslate = {
-  ["Disconnect by user"]  = "disconnected",
+  ["Disconnect by user."]  = "disconnected",
   ["Client timed out"]    = "timed out",
   ["Connection closing"]  = "lost connection",
 }
