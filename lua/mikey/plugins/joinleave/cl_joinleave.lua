@@ -12,20 +12,20 @@ mikey.network.receive("joinleave.join", function(tblData)
 
   if(bIsBot) then
     tblMessage = {
-      mikey.colors.primary, "→ ",
+      mikey.colors.alt,     "→ ",
       color_white,          "A silly bot named ",
       mikey.colors.alt,    strNick,
       color_white,          " has joined",
     }
   else
     tblMessage = {
-      mikey.colors.primary, "→ ",
+      mikey.colors.alt,       "→ ",
       --color_white,            "Player ",
-      mikey.colors.primary,      strNick,
+      mikey.colors.primary,   strNick,
       color_white,            " (",
-      mikey.colors.secondary, strSteamID,
+      mikey.colors.alt,       strSteamID,
       color_white,            ") has ",
-      mikey.colors.alt,   "connected",
+      mikey.colors.alt,       "connected",
     }
   end
 
@@ -34,10 +34,24 @@ end)
 
 
 local tblTranslate = {
-  ["Disconnect by user."]  = "disconnected",
-  ["Client timed out"]    = "timed out",
+  ["Disconnect by user."] = "left the game",
+  ["%s timed out"]        = "timed out",
   ["Connection closing"]  = "lost connection",
 }
+
+local function tryTranslation(strNick, strReason)
+  if(tblTranslate[strReason]) then
+    return tblTranslate[strReason]
+  end
+
+  for k,v in pairs(tblTranslate) do
+    if(string.format(k, strNick) == strReason) then
+      return tblTranslate[k]
+    end
+  end
+
+  return "lost connection: "..strReason
+end
 
 mikey.network.receive("joinleave.leave", function(tblData)
   local strNick     = tblData["nick"]
@@ -48,14 +62,14 @@ mikey.network.receive("joinleave.leave", function(tblData)
 
   local tblMessage = {}
 
-  --if(bIsBot) then return end
+  strReason = tryTranslation(strNick, strReason)
 
   tblMessage = {
     mikey.colors.secondary, "← ",
-    color_white,            "Player ",
+    --color_white,            "Player ",
     mikey.colors.alt,      strNick,
     color_white,            " has ",
-    mikey.colors.secondary,  tblTranslate[strReason] or strReason,
+    mikey.colors.secondary,  strReason,
   }
 
   chat.AddText(unpack(tblMessage))
