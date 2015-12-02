@@ -54,6 +54,7 @@ end
 mikey.network.receive("joinleave.leave", function(tblData)
   local strNick     = tblData["nick"]
   local strSteamID  = tblData["steamid"]
+  local iTeam       = tblData["team"]
   local bIsBot      = tblData["bot"]
   local iUserID     = tblData["userid"]
   local strReason   = tblData["reason"]
@@ -65,7 +66,7 @@ mikey.network.receive("joinleave.leave", function(tblData)
   tblMessage = {
     mikey.colors.secondary, "← ",
     --color_white,            "Player ",
-    mikey.colors.alt,      strNick,
+    team.GetColor(iTeam),   strNick,
     color_white,            " has ",
     mikey.colors.secondary,  strReason,
   }

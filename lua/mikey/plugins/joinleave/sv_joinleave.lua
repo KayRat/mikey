@@ -26,9 +26,12 @@ hook.Add("player_disconnect", "mikey.plugins.joinleave", function(tblData)
 
   if(string.sub(strReason, 1, 6) == "Kicked") then return end
 
+  local objPl = Player(iUserID)
+
   mikey.network.send("joinleave.leave", player.GetAll(), {
     ["nick"]    = strNick,
     ["steamid"] = strSteamID,
+    ["team"]    = objPl:Team(),
     ["bot"]     = bIsBot,
     ["userid"]  = iUserID,
     ["reason"]  = strReason,
