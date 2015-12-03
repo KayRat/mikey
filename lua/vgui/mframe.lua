@@ -47,7 +47,7 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout(iWidth, iHeight)
-  self.BaseClass.PerformLayout(self)
+  DFrame.PerformLayout(self, iWidth, iHeight)
 
   self.btnClose:SetPos(iWidth-self.btnClose:GetWide()-1, 0)
 
