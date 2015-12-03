@@ -18,6 +18,10 @@ for k,v in pairs(PANEL.Colors) do
   PANEL.Colors[k.."Hover"] = tblNewColor
 end
 
+function PANEL:Init()
+  self:SetFont("MButtonDefault")
+end
+
 function PANEL:SetColorScheme(strScheme)
   self.m_Scheme = strScheme
 end
