@@ -18,8 +18,6 @@ function objMenu:canUserRun(objPl)
 end
 
 function objMenu:onRun(objPl, strCmd, tblArgs)
-    print("[SERVER] onRun called by", objPl, tblArgs and tblArgs[1] or nil)
-
     net.Start("mikey.commands.menu.open")
     net.Send(objPl)
 end
