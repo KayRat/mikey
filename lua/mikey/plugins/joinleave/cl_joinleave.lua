@@ -73,3 +73,20 @@ mikey.network.receive("joinleave.leave", function(tblData)
 
   chat.AddText(unpack(tblMessage))
 end)
+
+mikey.network.receive("player.firstjoin", function(tblData)
+  local strNick     = tblData["nick"]
+  local strSteamID  = tblData["steam"]
+
+  if(not IsValid(objPl)) then
+    error("tried to show a welcome message for a player that doesn't exist")
+  end
+
+  chat.AddText(
+    mikey.colors.alt,       "! ",
+    mikey.colors.primary,   strNick,
+    color_white,            " has joined ",
+    mikey.colors.alt,       "for the first time",
+    color_white,            "!"
+  )
+end)

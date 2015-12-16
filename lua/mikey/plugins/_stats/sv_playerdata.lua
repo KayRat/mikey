@@ -39,7 +39,8 @@ function PLAYER:LoadPlayerData(bFirstJoin)
       table.RemoveByValue(tblPlayers, self)
 
       mikey.network.send("player.firstjoin", tblPlayers, {
-        ["player"]    = self,
+        ["nick"]    = self:Nick(),
+        ["steam"]   = self:SteamID(),
       })
     end
   end)
