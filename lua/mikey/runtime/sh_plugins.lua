@@ -7,11 +7,12 @@ local objPlugin = nil
 local function createNewPlugin(strName)
   local tblSkeleton = {
     -- data
-    ["__name"] = strName,
+    ["__name"]      = strName,
 
     -- functions
-    ["getName"] = function(self) return self.__name end,
-    ["canUserRun"] = function(self, objPl) return IsValid(objPl) end,
+    ["getName"]     = function(self) return self.__name end,
+    ["canUserRun"]  = function(self, objPl) return IsValid(objPl) end,
+    ["logAction"]   = function(self) return end,
   }
 
   tblSkeleton.__index = tblSkeleton
