@@ -38,7 +38,7 @@ function PLAYER:LoadPlayerData(bFirstJoin)
       local tblPlayers = table.Copy(player.GetAll())
       table.RemoveByValue(tblPlayers, self)
 
-      mikey.network.send("player.firstjoin", tblPlayers, {
+      mikey.network.send("joinleave.firstjoin", tblPlayers, {
         ["nick"]    = self:Nick(),
         ["steam"]   = self:SteamID(),
       })

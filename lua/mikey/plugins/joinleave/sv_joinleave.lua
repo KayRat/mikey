@@ -31,7 +31,6 @@ hook.Add("player_disconnect", "mikey.plugins.joinleave", function(tblData)
   mikey.network.send("joinleave.leave", player.GetAll(), {
     ["nick"]    = strNick,
     ["steamid"] = strSteamID,
-    ["team"]    = objPl:Team(),
     ["bot"]     = bIsBot,
     ["userid"]  = iUserID,
     ["reason"]  = strReason,
