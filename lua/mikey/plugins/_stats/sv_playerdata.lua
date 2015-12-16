@@ -29,19 +29,20 @@ function PLAYER:LoadPlayerData(bFirstJoin)
         error("failed to create player data for "..self:Nick())
       end
     else
-      PrintTable(tblResults)
       local tblData = tblResults[1]["data"]
       local iCredits = tonumber(tblData["credits"] or 0)
 
       self:SetNWVar("credits", iCredits)
 
-      local tblPlayers = table.Copy(player.GetAll())
-      table.RemoveByValue(tblPlayers, self)
+      if(self.m_bCreateStats) then
+        local tblPlayers = table.Copy(player.GetAll())
+        table.RemoveByValue(tblPlayers, self)
 
-      mikey.network.send("joinleave.firstjoin", tblPlayers, {
-        ["nick"]    = self:Nick(),
-        ["steam"]   = self:SteamID(),
-      })
+        mikey.network.send("joinleave.firstjoin", tblPlayers, {
+          ["nick"]    = self:Nick(),
+          ["steam"]   = self:SteamID(),
+        })
+      end
     end
   end)
 end
