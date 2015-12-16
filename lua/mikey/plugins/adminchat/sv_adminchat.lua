@@ -15,6 +15,8 @@ hook.Add("PlayerSay", "mikey.plugins.adminchat", function(objPl, strText, iTeam)
         ["from"]    = objPl,
         ["message"] = strText,
       })
+
+      MsgC(team.GetColor(objPl:Team()), objPl:Nick(), color_white, " to staff: "..strText)
     else
       objPl:sendMessage(mikey.colors.error, "[!] ", color_white, "You must enter a message to send to staff members!")
     end
