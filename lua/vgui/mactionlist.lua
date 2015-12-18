@@ -27,7 +27,6 @@ function PANEL:Init()
   for k,v in pairs(mikey.menu.category) do
     local tblPlugins = mikey.plugins.getAll(v)
     table.sort(tblPlugins, function(a, b)
-      print(a, b)
       return a["Menu"]["DisplayName"] > b["Menu"]["DisplayName"]
     end)
 
@@ -89,23 +88,20 @@ function PANEL:PerformLayout(iWidth, iHeight)
 end
 
 function PANEL:OnPlayerSelected(objPl, objCard)
-  self.m_SelectedPlayers[objPl:UniqueID()] = true
-  self.m_NumSelectedPlayers = self.m_NumSelectedPlayers+1
+  self.m_SelectedPlayers[objPl:UniqueID()] = objPl
+  self.m_NumSelectedPlayers = self.m_NumSelectedPlayers + 1
   self:InvalidateLayout()
 end
 
 function PANEL:OnPlayerDeselected(objPl, objCard)
   self.m_SelectedPlayers[objPl:UniqueID()] = nil
-  self.m_NumSelectedPlayers = self.m_NumSelectedPlayers-1
+  self.m_NumSelectedPlayers = self.m_NumSelectedPlayers - 1
   self:InvalidateLayout()
 end
 
-function PANEL:Paint(w, h)
+function PANEL:Paint(iWidth, iHeight)
   surface.SetDrawColor(0, 0, 0)
-  surface.DrawOutlinedRect(0, 0, w, h)
-
-  --surface.SetDrawColor(0, 0, 255, 155)
-  --surface.DrawRect(1, 1, w-1, h-2)
+  surface.DrawOutlinedRect(0, 0, iWidth, iHeight)
 end
 
 vgui.Register("MActionList", PANEL, "DPanel")
