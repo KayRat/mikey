@@ -1,7 +1,7 @@
 mikey = mikey or {}
 mikey.util = mikey.util or {}
 
-local function addPlainText(tblOutput, strText)
+mikey.util.addPlainText = function(tblOutput, strText)
   table.insert(tblOutput, color_white)
   table.insert(tblOutput, strText)
 end
@@ -15,11 +15,11 @@ mikey.util.processNames = function(tblOutput, tblInput)
 
     if(iNum > 1) then
       if(iNumTargets > 2 and iNum <= iNumTargets) then
-        addPlainText(tblOutput, ", ")
+        mikey.util.addPlainText(tblOutput, ", ")
       end
 
       if(iNumTargets == 1 or iNum == iNumTargets) then
-        addPlainText(tblOutput, (iNumTargets <= 2 and " " or "").."and ")
+        mikey.util.addPlainText(tblOutput, (iNumTargets <= 2 and " " or "").."and ")
       end
     end
 
@@ -28,4 +28,14 @@ mikey.util.processNames = function(tblOutput, tblInput)
 
     iNum = iNum + 1
   end
+end
+
+mikey.util.auditTargets = function(tblTargets)
+  for k,v in pairs(tblTargets) do
+    if(not IsValid(v) or not v:IsPlayer()) then
+      tblTargets[k] = nil
+    end
+  end
+
+  return tblTargets
 end
