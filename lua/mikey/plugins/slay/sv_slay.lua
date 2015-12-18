@@ -8,7 +8,7 @@ PLUGIN.logAction = function(self, objAdmin, tblTargets)
   })
 end
 
-mikey.network.receive("slay", function(objPl, tblData)
+mikey.network.receive("slay.doSlay", function(objPl, tblData)
   if(not tblData["targets"]) then
     mike.log.error("Received instruction to slay without any targets")
     return
