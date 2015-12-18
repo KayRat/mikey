@@ -5,6 +5,8 @@ mikey.network.handlers = mikey.network.handlers or {}
 if(SERVER) then util.AddNetworkString("mikey.network.transmit") end
 
 mikey.network.send = function(strName, objTo, tblData)
+  objTo = (type(objTo) == "table" and objTo or {objTo})
+
   net.Start("mikey.network.transmit")
     net.WriteString(strName)
     net.WriteTable(SERVER and tblData or objTo)
