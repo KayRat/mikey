@@ -1,5 +1,11 @@
 local PLUGIN = mikey.plugins.get()
 
+PLUGIN.onMenuClick = function(self, objTargets)
+  mikey.network.send("slay.doSlay", {
+    ["targets"] = objTargets
+  })
+end
+
 mikey.network.receive("slay.log", function(tblData)
   local objAdmin    = tblData["admin"]
   local tblTargets  = tblData["targets"]
@@ -13,9 +19,3 @@ mikey.network.receive("slay.log", function(tblData)
 
   chat.AddText(unpack(tblMessage))
 end)
-
-PLUGIN.onMenuClick = function(self, objTargets)
-  mikey.network.send("slay.doSlay", {
-    ["targets"] = objTargets
-  })
-end
