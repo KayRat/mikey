@@ -8,21 +8,21 @@ local tblTitles = {
   "feat. Pitbull",
   "michael scott approved",
   "now with 20% fewer inconsistencies",
-  "I hope Aaron isn't here",
   "super duper hacky version",
   "assistant (to the) regional manager",
-  "isn't this title a waste of CPU?",
+  "isn't this random title a waste of CPU?",
+  os.time(),
 }
 
-net.Receive("mikey.menu.refresh", function(iLen)
+mikey.network.receive("mikey.menu.refresh", function(tblData)
   if(IsValid(objMenu)) then
     objMenu:InvalidateLayout()
   end
 end)
 
-net.Receive("mikey.commands.menu.open", function(iLen)
+mikey.network.receive("mikey.menu.open", function(tblData)
   if(IsValid(objMenu)) then
-    objMenu:InvalidateLayout()
+    objMenu:InvalidateChildren(true)
   else
     objMenu = vgui.Create("MFrame")
     objMenu:SetTitle("mike's cereal shack - "..table.Random(tblTitles))
@@ -39,6 +39,13 @@ net.Receive("mikey.commands.menu.open", function(iLen)
       surface.SetDrawColor(255, 0, 0)
       surface.DrawRect(0, 0, iWidth, iHeight)
     end
+    pnlCanvas.PerformLayout = function(self, iWidth, iHeight)
+      local iOneThird = math.Round(iWidth / 3)
+
+      self.m_pnlPlayerList:SetWide(iOneThird*2)
+      --self.m_pnlActionList:SetWide(iOneThird)
+      print("OK")
+    end
 
     local pnlPlayerList, pnlActionList, pnlSettings
 
@@ -46,7 +53,6 @@ net.Receive("mikey.commands.menu.open", function(iLen)
       pnlPlayerList = vgui.Create("MPlayerGrid", pnlCanvas)
       pnlPlayerList:DockMargin(0, 0, 5, 0)
       pnlPlayerList:DockPadding(4, 4, 4, 4)
-      pnlPlayerList:SetWide(2*(pnlCanvas:GetWide()/2.8))
       pnlPlayerList:Dock(LEFT)
       --pnlPlayerList:InvalidateParent(true)
       pnlPlayerList:CreatePlayerList()
@@ -76,6 +82,7 @@ net.Receive("mikey.commands.menu.open", function(iLen)
     pnlCanvas.m_pnlSettings = pnlSettings
     objMenu.m_pnlCanvas = pnlCanvas
 
+    objMenu:InvalidateChildren(true)
     objMenu:MakePopup()
   end
 end)
