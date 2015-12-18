@@ -18,8 +18,7 @@ function objMenu:canUserRun(objPl)
 end
 
 function objMenu:onRun(objPl, strCmd, tblArgs)
-    net.Start("mikey.commands.menu.open")
-    net.Send(objPl)
+    mikey.network.send("mikey.menu.open", objPl)
 end
 
 mikey.commands.add(objMenu)
