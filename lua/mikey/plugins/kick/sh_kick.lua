@@ -7,19 +7,14 @@ PLUGIN["Menu"] = {
   ["SingleSelect"]  = false,
 }
 
-local kickCmd = mikey.commands.get("kick")
-local kickIDCmd = mikey.commands.get("kickid")
-
-local function CanUserRun(self, pl, cmd, args)
-  if(not IsValid(pl)) then
+PLUGIN.canUserRun = function(self, objPl)
+  if(not IsValid(objPl)) then
     return mikey.permission.NO_CONSOLE
   end
 
-  if(pl:IsMod()) then
+  if(objPl:isMod()) then
     return true
   end
 
   return mikey.permission.NONE
 end
-
-PLUGIN.CanUserRun = CanUserRun
