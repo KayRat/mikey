@@ -11,7 +11,7 @@ local function createNewPlugin(strName)
 
     -- functions
     ["getName"]     = function(self) return self.__name end,
-    ["canUserRun"]  = function(self, objPl) return IsValid(objPl) end,
+    ["canUserRun"]  = function(self, objPl) return false end,
     ["logAction"]   = function(self) return end,
   }
 
