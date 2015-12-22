@@ -35,6 +35,7 @@ local tblTranslate = {
   ["Disconnect by user."] = "left the game",
   ["%s timed out"]        = "timed out",
   ["Connection closing"]  = "lost connection",
+  ["Map is missing"]      = "been booted: map missing",
 }
 
 local function tryTranslation(strNick, strReason)
