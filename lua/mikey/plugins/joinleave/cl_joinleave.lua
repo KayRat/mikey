@@ -65,7 +65,7 @@ mikey.network.receive("joinleave.leave", function(tblData)
 
   tblMessage = {
     mikey.colors.secondary, "← ",
-    mikey.colors.secondary,   strNick,
+    mikey.colors.primary,   strNick,
     color_white,            " has ",
     mikey.colors.secondary,  strReason,
   }
