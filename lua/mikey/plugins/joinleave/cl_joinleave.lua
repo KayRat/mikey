@@ -49,7 +49,7 @@ local function tryTranslation(strNick, strReason)
     end
   end
 
-  return "lost connection: "..strReason
+  return "was disconnected: "..strReason
 end
 
 mikey.network.receive("joinleave.leave", function(tblData)
