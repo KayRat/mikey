@@ -35,21 +35,25 @@ local tblTranslate = {
   ["Disconnect by user."] = "left the game",
   ["%s timed out"]        = "timed out",
   ["Connection closing"]  = "lost connection",
-  ["Map is missing"]      = "been booted: map missing",
+  ["Map is missing"]      = {"was booted:", "missing map"},
 }
 
 local function tryTranslation(strNick, strReason)
   if(tblTranslate[strReason]) then
-    return tblTranslate[strReason]
+    return "has", tblTranslate[strReason]
   end
 
   for k,v in pairs(tblTranslate) do
     if(string.format(k, strNick) == strReason) then
-      return tblTranslate[k]
+      if(type(v) == "table") then
+        return v[1], v[2]
+      end
+
+      return "has", v
     end
   end
 
-  return "was disconnected: "..strReason
+  return "has", "disconnected: "..strReason
 end
 
 mikey.network.receive("joinleave.leave", function(tblData)
@@ -57,16 +61,15 @@ mikey.network.receive("joinleave.leave", function(tblData)
   local strSteamID  = tblData["steamid"]
   local bIsBot      = tblData["bot"]
   local iUserID     = tblData["userid"]
-  local strReason   = tblData["reason"]
 
   local tblMessage = {}
 
-  strReason = tryTranslation(strNick, strReason)
+  local strPrefix, strReason = tryTranslation(strNick, tblData["reason"])
 
   tblMessage = {
     mikey.colors.secondary, "← ",
     mikey.colors.primary,   strNick,
-    color_white,            " has ",
+    color_white,            " "..strPrefix.." ",
     mikey.colors.secondary,  strReason,
   }
 
