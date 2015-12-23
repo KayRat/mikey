@@ -18,12 +18,12 @@ mikey.network.receive("kick.log", function(tblData)
 
   local tblMessage = {
     team.GetColor(objAdmin:Team()),   objAdmin:Nick(),
-    color_white,                      " kicked ",
+    color_white,                      " gave ",
   }
 
   mikey.util.processNames(tblMessage, tblTargets)
 
-  mikey.util.addPlainText(tblMessage, " (")
+  mikey.util.addPlainText(tblMessage, " the boot (")
   table.insert(tblMessage, mikey.colors.secondary)
   table.insert(tblMessage, strReason)
   mikey.util.addPlainText(tblMessage, ")")
