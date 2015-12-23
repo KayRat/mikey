@@ -44,7 +44,9 @@ function mikey.plugins.getAll(objFilter)
 
   for k,v in pairs(mikey.plugins.list) do
     if(not objFilter or (v["Menu"] and v["Menu"]["Category"] and v["Menu"]["Category"] == objFilter)) then
-      table.insert(tbl, v)
+      if(v:canUserRun(LocalPlayer()) == true) then
+        table.insert(tbl, v)
+      end
     end
   end
 

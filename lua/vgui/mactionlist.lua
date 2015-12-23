@@ -10,14 +10,12 @@ function PANEL:Init()
   objHeader:SetTextColor(color_black)
   objHeader:SetText("0 players selected")
 
-  if(false) then
-    local objQuickMenu = vgui.Create("DCollapsibleCategory", self)
-    objQuickMenu:SetLabel("Quick-Menu")
-    objQuickMenu:Dock(TOP)
-    objQuickMenu.Paint = function(self, iWidth, iHeight)
-      surface.SetDrawColor(255, 0, 0, 255)
-      surface.DrawRect(0, 0, iWidth, iHeight)
-    end
+  local objQuickMenu = vgui.Create("DCollapsibleCategory", self)
+  objQuickMenu:SetLabel("Quick-Menu")
+  objQuickMenu:Dock(TOP)
+  objQuickMenu.Paint = function(self, iWidth, iHeight)
+    surface.SetDrawColor(255, 0, 0, 255)
+    surface.DrawRect(0, 0, iWidth, iHeight)
   end
 
   local objMenu = vgui.Create("DPanel", self)
@@ -43,6 +41,8 @@ function PANEL:Init()
     objCatTitle:SetTextColor(color_black)
     objCatTitle:Dock(TOP)
 
+    local pnlCanvas = self:GetParent()
+
     for k,v in pairs(tblPlugins) do
       local objThisPlugin = v
       local tblMenu = objThisPlugin["Menu"]
@@ -58,12 +58,12 @@ function PANEL:Init()
       end
       objPluginButton.DoClick = function()
         if(objThisPlugin.onMenuClick) then
-          objThisPlugin:onMenuClick(self.m_SelectedPlayers)
+          objThisPlugin:onMenuClick(pnlCanvas:getSelectedPlayers())
         end
       end
       objPluginButton.DoRightClick = function()
         if(objThisPlugin.onMenuRightClick) then
-          objThisPlugin:onMenuRightClick(self.m_SelectedPlayers)
+          objThisPlugin:onMenuRightClick(pnlCanvas:getSelectedPlayers())
         end
       end
 
@@ -80,22 +80,20 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout(iWidth, iHeight)
-  local iNumSelected = self.m_NumSelectedPlayers
+  local pnlCanvas = self:GetParent()
+  local iNumSelected = pnlCanvas:getNumSelectedPlayers()
 
   self.m_Header:SetText(iNumSelected.." player"..(iNumSelected ~= 1 and "s" or "").." selected")
 
+  self.m_QuickMenu:SetVisible(false)
   self.m_Menus:SetVisible(iNumSelected > 0)
 end
 
-function PANEL:OnPlayerSelected(objPl, objCard)
-  self.m_SelectedPlayers[objPl:UniqueID()] = objPl
-  self.m_NumSelectedPlayers = self.m_NumSelectedPlayers + 1
+function PANEL:onPlayerSelected(objPl, objCard)
   self:InvalidateLayout()
 end
 
-function PANEL:OnPlayerDeselected(objPl, objCard)
-  self.m_SelectedPlayers[objPl:UniqueID()] = nil
-  self.m_NumSelectedPlayers = self.m_NumSelectedPlayers - 1
+function PANEL:onPlayerDeselected(objPl, objCard)
   self:InvalidateLayout()
 end
 

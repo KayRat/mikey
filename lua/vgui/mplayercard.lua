@@ -41,7 +41,7 @@ function PANEL:Init()
 
     do -- player details
       local objParent = self:GetParent()
-      local objPl = objParent:GetPlayer()
+      local objPl = objParent:getPlayer()
       local iBarHeight = 20
 
       if(not IsValid(objPl)) then return end
@@ -85,7 +85,7 @@ function PANEL:Init()
   local objFakeButton = vgui.Create("DButton", self)
   objFakeButton:SetText("")
   objFakeButton:SetPos(0, 0)
-  objFakeButton.Paint = function(self, iWidth, iHeight) end
+  objFakeButton.Paint = function(self, iWidth, iHeight) return end
   objFakeButton.DoClick = function(self) objFakeButton:GetParent():DoClick() end
 
   self.m_FakeButton = objFakeButton
@@ -121,11 +121,13 @@ function PANEL:SetSelected(bSelected)
   self.m_Selected = bSelected
 
   if(bSelected) then
-    self:GetParent():GetParent():GetParent():OnPlayerSelected(self:GetPlayer(), self)
+    self:GetParent():GetParent():GetParent():GetParent():onPlayerSelected(self:getPlayer(), self)
   else
-    self:GetParent():GetParent():GetParent():OnPlayerDeselected(self:GetPlayer(), self)
+    self:GetParent():GetParent():GetParent():GetParent():onPlayerDeselected(self:getPlayer(), self)
   end
 end
+
+PANEL.setSelected = PANEL.SetSelected
 
 function PANEL:IsSelected()
   return self.m_Selected
@@ -134,10 +136,15 @@ end
 function PANEL:SetPlayer(objPl)
   self.m_Player = objPl
   self.m_Avatar:SetPlayer(objPl, self:GetWide())
+  self.m_strUniqueID = objPl:UniqueID()
 end
 
-function PANEL:GetPlayer()
+function PANEL:getPlayer()
   return self.m_Player
+end
+
+function PANEL:getUniqueID()
+  return self.m_strUniqueID
 end
 
 function PANEL:DoClick()

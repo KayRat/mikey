@@ -1,5 +1,4 @@
 local PANEL = {}
-PANEL.m_SelectedPlayers = {}
 
 function PANEL:Init()
   local pnlIconLayout = vgui.Create("DIconLayout", self)
@@ -8,8 +7,8 @@ function PANEL:Init()
   pnlIconLayout:Dock(TOP)
   pnlIconLayout:SetSpaceX(4)
   pnlIconLayout:SetSpaceY(4)
-  pnlIconLayout.OnPlayerSelected = self.OnPlayerSelected
-  pnlIconLayout.OnPlayerDeselected = self.OnPlayerDeselected
+  pnlIconLayout.onPlayerSelected = self.onPlayerSelected
+  pnlIconLayout.onPlayerDeselected = self.onPlayerDeselected
 
   self.m_pnlIconLayout = pnlIconLayout
 end
@@ -22,55 +21,69 @@ function PANEL:PerformLayout(iWidth, iHeight)
   end
 end
 
-function PANEL:OnPlayerSelected(objPl, objPanel)
-  self:SetPlayerSelected(objPl, true)
-end
-
-function PANEL:OnPlayerDeselected(objPl, objPanel)
-  self:SetPlayerSelected(objPl, false)
-end
-
-function PANEL:GetSelectedPlayers()
-  return table.Copy(self.m_SelectedPlayers)
-end
-
-function PANEL:SetPlayerSelected(objPl, bSelected)
-  if(bSelected) then
-    self.m_SelectedPlayers[objPl:UniqueID()] = true
-  else
-    self.m_SelectedPlayers[objPl:UniqueID()] = nil
-  end
-end
-
-function PANEL:ClearPlayerList()
-  self.m_SelectedPlayers = {}
+function PANEL:clearPlayerList()
   self.m_pnlIconLayout:Clear()
 end
 
-function PANEL:CreatePlayerList(objSortMethod)
-  self:ClearPlayerList()
-  local tblMaster = objSortMethod and objSortMethod() or player.GetAll() -- TODO: group by team, sort by player name
+function PANEL:getPlayerCards()
+  PrintTable(self.m_pnlIconLayout:GetChildren())
+  return self.m_pnlIconLayout:GetChildren()
+end
+
+function PANEL:createPlayerList(objSortMethod)
+  self:clearPlayerList()
+  local tblMaster = objSortMethod and objSortMethod() or player.GetAll() -- TODO: default to group by team, sort by player name
 
   for k,v in pairs(tblMaster) do
-    self:AddPlayerCard(v)
+    if(IsValid(v)) then
+      self:addPlayerCard(v)
+    end
+  end
+
+  local pnlParent = self:GetParent()
+
+  for k,v in pairs(pnlParent:getSelectedPlayers()) do
+    if(not IsValid(v)) then
+      pnlParent:setPlayerSelected(k, false)
+    end
+  end
+
+  local pnlActionList = pnlParent.m_pnlActionList
+  if(IsValid(pnlActionList)) then
+    pnlActionList:InvalidateLayout()
   end
 end
 
-function PANEL:AddPlayerCard(objPl)
-  local iCardWidth, iCardHeight = 136, 136
+function PANEL:addPlayerCard(objPl)
+  local iCardWidth, iCardHeight = 136, 136 -- TODO: select size based on parent
 
   local pnl = self.m_pnlIconLayout:Add("MPlayerCard")
   pnl:SetSize(iCardWidth, iCardHeight)
   pnl:SetPlayer(objPl)
   pnl:SetParent(self.m_pnlIconLayout)
+
+  if(self:GetParent():isPlayerSelected(objPl:UniqueID())) then
+    pnl:setSelected(true)
+  end
 end
 
-function PANEL:Paint(w, h)
-  surface.SetDrawColor(0, 0, 0)
-  surface.DrawOutlinedRect(0, 0, w, h)
+function PANEL:removePlayerCard(strUniqueID)
+  PrintTable(self:getPlayerCards())
+  for k,v in pairs(self:getPlayerCards()) do
+    print("checking card", k, v)
+    if(v:getUniqueID() == strUniqueID) then
+      print("removing", v:getUniqueID())
+      v:Remove()
+      break
+    end
+  end
 
-  --[[surface.SetDrawColor(0, 255, 0, 155)
-  surface.DrawRect(1, 1, w-2, h-2)]]
+  self:GetParent():setPlayerSelected(strUniqueID, false)
+end
+
+function PANEL:Paint(iWidth, iHeight)
+  surface.SetDrawColor(0, 0, 0)
+  surface.DrawOutlinedRect(0, 0, iWidth, iHeight)
 end
 
 vgui.Register("MPlayerGrid", PANEL, "DScrollPanel")
