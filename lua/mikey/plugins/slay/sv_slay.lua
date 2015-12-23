@@ -16,18 +16,11 @@ mikey.network.receive("slay.doSlay", function(objPl, tblData)
 
   local tblTargets = tblData["targets"]
 
-  for k,v in pairs(tblTargets) do
-    local objTarget = player.GetByUniqueID(k)
+  mikey.util.auditTargets(tblTargets)
 
-    if(IsValid(objTarget)) then
-      if(objTarget:Alive()) then
-        objTarget:Kill()
-      else
-        table.remove(tblTargets, k)
-      end
-    else
-      mikey.log.error("Received instruction to slay a non-existent player ("..k..")")
-      table.remove(tblTargets, k)
+  for k,v in pairs(tblTargets) do
+    if(v:Alive()) then
+      v:Kill()
     end
   end
 
