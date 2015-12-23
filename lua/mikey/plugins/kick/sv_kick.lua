@@ -1,9 +1,18 @@
 local PLUGIN = mikey.plugins.get()
 
 PLUGIN.logAction = function(self, objAdmin, tblTargets, strReason)
+  local tblLogTargets = {}
+
+  for k,v in pairs(tblTargets) do
+    table.insert(tblLogTargets, {
+      ["nick"]  = v:Nick(),
+      ["team"]  = v:Team(),
+    })
+  end
+
   mikey.network.send("kick.log", player.GetAll(), {
     ["admin"]   = objAdmin,
-    ["targets"] = tblTargets,
+    ["targets"] = tblLogTargets,
     ["reason"]  = strReason,
   })
 end
