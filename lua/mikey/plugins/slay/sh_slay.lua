@@ -7,7 +7,7 @@ PLUGIN["Menu"] = {
   ["SingleSelect"]  = false,
 }
 
-PLUGIN.CanUserRun = function(self, objPl, strCmd, tblArgs)
+PLUGIN.canUserRun = function(self, objPl, strCmd, tblArgs)
   if(not IsValid(objPl)) then
     return mikey.permission.NO_CONSOLE
   end
