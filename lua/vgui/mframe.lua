@@ -1,21 +1,3 @@
-surface.CreateFont("MikeDefault", {
-  ["font"] = "DermaDefault",
-  ["size"] = 16,
-  ["weight"] = 500,
-  ["rotary"] = false,
-})
-
-surface.CreateFont("MikeDefaultBold", {
-  ["font"] = "MikeDefault",
-  ["weight"] = 700,
-})
-
-surface.CreateFont("MikeTitleControls", {
-  ["font"] = "MikeDefaultBold",
-  ["size"] = 18,
-  ["weight"] = 900,
-})
-
 local PANEL = {}
 
 PANEL.colors = {

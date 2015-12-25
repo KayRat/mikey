@@ -1,40 +1,28 @@
-do -- create fonts
-  surface.CreateFont("PlayerCardName", {
-    ["font"]      = "DermaDefault",
-    ["size"]      = 16,
-    ["weight"]    = 600,
-    ["antialias"] = true,
-    ["outline"]   = false,
-  })
-end
-
-local iPadding = 10
-
 local PANEL = {}
-PANEL.m_Selected = false
-PANEL.Colors = {
-  ["OnHover"]         = mikey.colors.alt,
-  ["OnSelected"]      = mikey.colors.alt2,
-  ["OnHoverSelected"] = mikey.colors.alt2,
-  ["NotSelected"]     = color_black,
+PANEL.m_bSelected = false
+PANEL.m_tblColors = {
+  ["onHover"]         = mikey.colors.alt,
+  ["onSelected"]      = mikey.colors.secondary,
+  ["onHoverSelected"] = mikey.colors.alt2,
+  ["notSelected"]     = color_black,
 }
 
 function PANEL:Init()
-  self.m_Avatar = vgui.Create("AvatarImage", self)
-  self.m_Avatar:SetSize(128, 128)
-  self.m_Avatar.DoClick = function(self)
+  self.m_pnlAvatar = vgui.Create("AvatarImage", self)
+  self.m_pnlAvatar:SetSize(128, 128)
+  self.m_pnlAvatar.DoClick = function(self)
     self:GetParent():DoClick()
   end
-  self.m_Avatar.Paint = function(self, iWidth, iHeight)
+  self.m_pnlAvatar.Paint = function(self, iWidth, iHeight)
     surface.SetDrawColor(color_white)
     surface.DrawRect(0, 0, iWidth, iHeight)
   end
-  self.m_Avatar.PaintOver = function(self, iWidth, iHeight)
+  self.m_pnlAvatar.PaintOver = function(self, iWidth, iHeight)
     do -- outline
       if((self:IsHovered() or self:GetParent():IsHovered()) and self:GetParent():IsSelected()) then
-        surface.SetDrawColor(self:GetParent().Colors.OnSelected)
+        surface.SetDrawColor(self:GetParent().m_tblColors.onSelected)
       else
-        surface.SetDrawColor(self:GetParent().Colors.NotSelected)
+        surface.SetDrawColor(self:GetParent().m_tblColors.notSelected)
       end
       surface.DrawOutlinedRect(0, 0, iWidth, iHeight)
     end
@@ -55,7 +43,7 @@ function PANEL:Init()
         surface.DrawRect(1, iHeight-iBarHeight-1, iWidth-2, iBarHeight)
 
         surface.SetDrawColor(color_black)
-        surface.DrawLine(1, iHeight-iBarHeight-1, iWidth-2, iHeight-iBarHeight-1)
+        surface.DrawLine(0, iHeight-iBarHeight-1, iWidth-1, iHeight-iBarHeight-1)
       end
 
       do -- player name
@@ -80,7 +68,7 @@ function PANEL:Init()
     end
   end
 
-  local objSuperParent = self.m_Avatar
+  local objSuperParent = self.m_pnlAvatar
 
   local objFakeButton = vgui.Create("DButton", self)
   objFakeButton:SetText("")
@@ -88,37 +76,37 @@ function PANEL:Init()
   objFakeButton.Paint = function(self, iWidth, iHeight) return end
   objFakeButton.DoClick = function(self) objFakeButton:GetParent():DoClick() end
 
-  self.m_FakeButton = objFakeButton
+  self.m_pnlFakeButton = objFakeButton
 end
 
 function PANEL:PerformLayout(iWidth, iHeight)
-  self.m_Avatar:CenterHorizontal()
-  local x, y = self.m_Avatar:GetPos()
-  self.m_Avatar:SetPos(4, 4)
+  self.m_pnlAvatar:CenterHorizontal()
+  local x, y = self.m_pnlAvatar:GetPos()
+  self.m_pnlAvatar:SetPos(4, 4)
 
-  self.m_FakeButton:SetSize(self:GetWide(), self:GetTall())
+  self.m_pnlFakeButton:SetSize(self:GetWide(), self:GetTall())
 end
 
 function PANEL:Paint(iWidth, iHeight)
   if(not self:IsHovered() and not self:IsChildHovered(6) and not self:IsSelected()) then return end
 
   if(self:IsHovered() or self:IsChildHovered(6)) then
-    surface.SetDrawColor(self.Colors.OnHover)
+    surface.SetDrawColor(self.m_tblColors.onHover)
   end
 
   if(self:IsSelected()) then
-    surface.SetDrawColor(self.Colors.OnSelected)
+    surface.SetDrawColor(self.m_tblColors.onSelected)
   end
 
   if((self:IsHovered() or self:IsChildHovered(6)) and self:IsSelected()) then
-    surface.SetDrawColor(self.Colors.OnHoverSelected)
+    surface.SetDrawColor(self.m_tblColors.onHoverSelected)
   end
 
   surface.DrawRect(0, 0, iWidth, iHeight)
 end
 
 function PANEL:SetSelected(bSelected)
-  self.m_Selected = bSelected
+  self.m_bSelected = bSelected
 
   if(bSelected) then
     self:GetParent():GetParent():GetParent():GetParent():onPlayerSelected(self:getPlayer(), self)
@@ -130,17 +118,17 @@ end
 PANEL.setSelected = PANEL.SetSelected
 
 function PANEL:IsSelected()
-  return self.m_Selected
+  return self.m_bSelected
 end
 
 function PANEL:SetPlayer(objPl)
-  self.m_Player = objPl
-  self.m_Avatar:SetPlayer(objPl, self:GetWide())
+  self.m_objPlayer = objPl
+  self.m_pnlAvatar:SetPlayer(objPl, self:GetWide())
   self.m_strUniqueID = objPl:UniqueID()
 end
 
 function PANEL:getPlayer()
-  return self.m_Player
+  return self.m_objPlayer
 end
 
 function PANEL:getUniqueID()
