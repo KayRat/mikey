@@ -61,7 +61,7 @@ end
 function PANEL:PaintOver(iWidth, iHeight)
   -- title bar underline
   surface.SetDrawColor(color_black)
-  surface.DrawLine(1, self.titleBar.height, iWidth-2, self.titleBar.height)
+  surface.DrawLine(0, self.titleBar.height, iWidth-2, self.titleBar.height)
 
   -- frame outline
   surface.SetDrawColor(self.colors.frame.outline)

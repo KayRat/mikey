@@ -59,7 +59,7 @@ function PANEL:addPlayerCard(objPl)
 
   local pnl = self.m_pnlIconLayout:Add("MPlayerCard")
   pnl:SetSize(iCardWidth, iCardHeight)
-  pnl:SetPlayer(objPl)
+  pnl:setPlayer(objPl)
   pnl:SetParent(self.m_pnlIconLayout)
 
   if(self:GetParent():isPlayerSelected(objPl:UniqueID())) then

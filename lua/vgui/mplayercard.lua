@@ -8,16 +8,19 @@ PANEL.m_tblColors = {
 }
 
 function PANEL:Init()
-  self.m_pnlAvatar = vgui.Create("AvatarImage", self)
-  self.m_pnlAvatar:SetSize(128, 128)
-  self.m_pnlAvatar.DoClick = function(self)
+  self.avatar = vgui.Create("AvatarImage", self)
+  self.avatar.DoClick = function(self)
     self:GetParent():DoClick()
   end
-  self.m_pnlAvatar.Paint = function(self, iWidth, iHeight)
+  self.avatar.PerformLayout = function(self, iWidth, iHeight)
+    self:CenterVertical()
+    self:CenterHorizontal()
+  end
+  self.avatar.Paint = function(self, iWidth, iHeight)
     surface.SetDrawColor(color_white)
     surface.DrawRect(0, 0, iWidth, iHeight)
   end
-  self.m_pnlAvatar.PaintOver = function(self, iWidth, iHeight)
+  self.avatar.PaintOver = function(self, iWidth, iHeight)
     do -- outline
       if((self:IsHovered() or self:GetParent():IsHovered()) and self:GetParent():IsSelected()) then
         surface.SetDrawColor(self:GetParent().m_tblColors.onSelected)
@@ -68,8 +71,6 @@ function PANEL:Init()
     end
   end
 
-  local objSuperParent = self.m_pnlAvatar
-
   local objFakeButton = vgui.Create("DButton", self)
   objFakeButton:SetText("")
   objFakeButton:SetPos(0, 0)
@@ -80,33 +81,26 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout(iWidth, iHeight)
-  self.m_pnlAvatar:CenterHorizontal()
-  local x, y = self.m_pnlAvatar:GetPos()
-  self.m_pnlAvatar:SetPos(4, 4)
-
   self.m_pnlFakeButton:SetSize(self:GetWide(), self:GetTall())
 end
 
 function PANEL:Paint(iWidth, iHeight)
   if(not self:IsHovered() and not self:IsChildHovered(6) and not self:IsSelected()) then return end
 
-  if(self:IsHovered() or self:IsChildHovered(6)) then
-    surface.SetDrawColor(self.m_tblColors.onHover)
-  end
-
-  if(self:IsSelected()) then
+  if(self:IsSelected() or self.avatar:GetWide() ~= self:GetWide()) then
     surface.SetDrawColor(self.m_tblColors.onSelected)
+    surface.DrawRect(0, 0, iWidth, iHeight)
   end
-
-  if((self:IsHovered() or self:IsChildHovered(6)) and self:IsSelected()) then
-    surface.SetDrawColor(self.m_tblColors.onHoverSelected)
-  end
-
-  surface.DrawRect(0, 0, iWidth, iHeight)
 end
 
 function PANEL:SetSelected(bSelected)
   self.m_bSelected = bSelected
+
+  if(bSelected) then
+    self.avatar:SizeTo(self:GetWide() - 4 - 4, self:GetTall() - 4 - 4, 0.15, 0)
+  else
+    self.avatar:SizeTo(self:GetWide(), self:GetTall(), 0.15, 0)
+  end
 
   if(bSelected) then
     self:GetParent():GetParent():GetParent():GetParent():onPlayerSelected(self:getPlayer(), self)
@@ -115,15 +109,15 @@ function PANEL:SetSelected(bSelected)
   end
 end
 
-PANEL.setSelected = PANEL.SetSelected
+--PANEL.setSelected = PANEL.SetSelected
 
 function PANEL:IsSelected()
   return self.m_bSelected
 end
 
-function PANEL:SetPlayer(objPl)
+function PANEL:setPlayer(objPl)
   self.m_objPlayer = objPl
-  self.m_pnlAvatar:SetPlayer(objPl, self:GetWide())
+  self.avatar:SetPlayer(objPl, self:GetWide())
   self.m_strUniqueID = objPl:UniqueID()
 end
 
@@ -137,6 +131,11 @@ end
 
 function PANEL:DoClick()
   self:SetSelected(not self:IsSelected())
+end
+
+function PANEL:SetSize(iWidth, iHeight)
+  self.BaseClass.SetSize(self, iWidth, iHeight)
+  self.avatar:SetSize(iWidth, iHeight)
 end
 
 vgui.Register("MPlayerCard", PANEL, "DButton")

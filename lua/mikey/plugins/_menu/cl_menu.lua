@@ -31,7 +31,7 @@ mikey.network.receive("mikey.menu.open", function(tblData)
   local iMenuWidth  = math.Clamp(ScrW()*0.6, 825, ScrW())
   local iMenuHeight = math.Clamp(ScrH()*0.4, 525, ScrH())
 
-  if(IsValid(objMenu)) then
+  if(IsValid(objMenu) and IsValid(objMenu.m_pnlCanvas)) then
     objMenu:InvalidateChildren(true)
   else
     objMenu = vgui.Create("MFrame")
