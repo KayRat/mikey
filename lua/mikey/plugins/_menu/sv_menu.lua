@@ -12,7 +12,7 @@ end)
 function objMenu:canUserRun(objPl)
     if(not IsValid(objPl)) then return mikey.commands.error.NO_CONSOLE end
 
-    return objPl:isMod()
+    return objPl:isMod() or mikey.commands.error.NO_PERMISSION
 end
 
 function objMenu:onRun(objPl, strCmd, tblArgs)
