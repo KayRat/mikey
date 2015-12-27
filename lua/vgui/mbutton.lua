@@ -18,8 +18,16 @@ for k,v in pairs(PANEL.Colors) do
   PANEL.Colors[k.."Hover"] = tblNewColor
 end
 
+local objTextNormal     = Color(95, 95, 95)
+local objTextDepressed  = color_black
+
 function PANEL:Init()
   self:SetFont("MButtonDefault")
+end
+
+function PANEL:PerformLayout(iWidth, iHeight)
+  self.BaseClass.PerformLayout(self, iWidth, iHeight)
+  self:SetTextColor(self.Depressed and objTextDepressed or objTextNormal)
 end
 
 function PANEL:SetColorScheme(strScheme)
