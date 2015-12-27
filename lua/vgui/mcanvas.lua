@@ -27,6 +27,7 @@ function PANEL:setPlayerSelected(objPl, bSelected)
   self.m_tblSelectedPlayers[bIsEnt and objPl:UniqueID() or objPl] = bSelected and (bIsEnt and objPl or player.GetByUniqueID(objPl)) or nil
 
   self:updateSelectedPlayerCount()
+  self:InvalidateChildren()
 end
 
 function PANEL:isPlayerSelected(strUniqueID)

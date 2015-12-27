@@ -3,7 +3,7 @@ local PANEL = {}
 function PANEL:Init()
   local pnlIconLayout = vgui.Create("DIconLayout", self)
   pnlIconLayout:DockMargin(5, 5, 5, 5)
-  --pnlIconLayout:DockPadding(5, 5, 5, 5)
+  pnlIconLayout:DockPadding(5, 5, 5, 5)
   pnlIconLayout:Dock(TOP)
   pnlIconLayout:SetSpaceX(4)
   pnlIconLayout:SetSpaceY(4)
@@ -30,6 +30,21 @@ function PANEL:getPlayerCards()
   return self.m_pnlIconLayout:GetChildren()
 end
 
+function PANEL:updatePlayerList()
+  for k,v in pairs(self:getPlayerCards()) do
+    if(not IsValid(v:getPlayer())) then
+      self:GetParent():setPlayerSelected(v:getUniqueID(), false)
+      v:Remove()
+    end
+  end
+
+  for k,v in pairs(player.GetAll()) do
+    if(not self:hasPlayerCard(v:UniqueID())) then
+      self:addPlayerCard(v)
+    end
+  end
+end
+
 function PANEL:createPlayerList(objSortMethod)
   self:clearPlayerList()
   local tblMaster = objSortMethod and objSortMethod() or player.GetAll() -- TODO: default to group by team, sort by player name
@@ -39,20 +54,9 @@ function PANEL:createPlayerList(objSortMethod)
       self:addPlayerCard(v)
     end
   end
-
-  local pnlParent = self:GetParent()
-
-  for k,v in pairs(pnlParent:getSelectedPlayers()) do
-    if(not IsValid(v)) then
-      pnlParent:setPlayerSelected(k, false)
-    end
-  end
-
-  local pnlActionList = pnlParent.m_pnlActionList
-  if(IsValid(pnlActionList)) then
-    pnlActionList:InvalidateLayout()
-  end
 end
+
+local tblPlayerCards = {}
 
 function PANEL:addPlayerCard(objPl)
   local iCardWidth, iCardHeight = 136, 136 -- TODO: select size based on parent
@@ -65,20 +69,25 @@ function PANEL:addPlayerCard(objPl)
   if(self:GetParent():isPlayerSelected(objPl:UniqueID())) then
     pnl:setSelected(true)
   end
+
+  tblPlayerCards[objPl:UniqueID()] = true
+end
+
+function PANEL:hasPlayerCard(strUniqueID)
+  return tblPlayerCards[strUniqueID] ~= nil
 end
 
 function PANEL:removePlayerCard(strUniqueID)
   PrintTable(self:getPlayerCards())
   for k,v in pairs(self:getPlayerCards()) do
-    print("checking card", k, v)
     if(v:getUniqueID() == strUniqueID) then
-      print("removing", v:getUniqueID())
       v:Remove()
       break
     end
   end
 
   self:GetParent():setPlayerSelected(strUniqueID, false)
+  tblPlayerCards[strUniqueID] = nil
 end
 
 function PANEL:Paint(iWidth, iHeight)

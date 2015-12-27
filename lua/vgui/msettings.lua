@@ -1,6 +1,8 @@
 local PANEL = {}
 
 function PANEL:Init()
+  self:DockMargin(4, 4, 4, 4)
+
   local objSettings = vgui.Create("MButton", self)
   objSettings:SetText("Settings")
   objSettings:SetIcon("icon16/cog.png")
@@ -30,32 +32,24 @@ function PANEL:Init()
     objNoFunction:MakePopup()
   end
 
+  local objDisguise = vgui.Create("MButton", self)
+  objDisguise:SetText("Disguise")
+  objDisguise:SetIcon("icon16/status_online.png")
+  objDisguise:Dock(LEFT)
+  objDisguise:DockMargin(4, 0, 0, 0)
+
   self.m_Settings = objSettings
-end
-
-function PANEL:InvalidateLayout()
-  if(LocalPlayer():IsAdmin()) then
-    local objDisguise = vgui.Create("MButton", self)
-    objDisguise:SetText("Disguise")
-    objDisguise:SetIcon("icon16/status_online.png")
-    objDisguise:Dock(LEFT)
-    objDisguise:DockMargin(2, 0, 0, 0)
-
-    self.m_Disguise = objDisguise
-  else
-    if(self.m_Disguise) then
-      self.m_Disguise:Remove()
-    end
-  end
+  self.m_Disguise = objDisguise
 end
 
 function PANEL:PerformLayout(iWidth, iHeight)
-  if(self.m_Disguise) then
-    local iHalfsies = iWidth/2-1
-    self.m_Settings:SetWidth(iHalfsies)
-    self.m_Disguise:SetWidth(iHalfsies)
+  if(LocalPlayer():IsAdmin()) then
+    self.m_Settings:SetWide(iWidth / 2)
+    self.m_Settings:Dock(LEFT)
+    self.m_Disguise:Dock(FILL)
   else
-    self.m_Settings:SetWidth(iWidth)
+    self.m_Disguise:SetVisible(false)
+    self.m_Settings:Dock(LEFT)
   end
 end
 

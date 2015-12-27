@@ -16,15 +16,18 @@ local tblTitles = {
   os.time(),
 }
 
-local function refreshCards()
-  print("received refresh request")
+local function refreshCards(objEnt)
+  print("received refresh request", objEnt)
   if(IsValid(objMenu)) then
+    objMenu:RequestFocus()
     print("refreshing currently opened menu")
-    objMenu.m_pnlCanvas.m_pnlPlayerList:createPlayerList()
+    objMenu.m_pnlCanvas.m_pnlPlayerList:updatePlayerList()
   end
 end
 
 mikey.network.receive("mikey.menu.refresh", refreshCards)
+hook.Add("OnPlayerRemoved", "mikey.menu.refresh", refreshCards)
+hook.Add("OnEntityCreated", "mikey.menu.refresh", function(objEnt) if(objEnt:IsPlayer()) then refreshCards(objEnt) end end)
 
 mikey.network.receive("mikey.menu.open", function(tblData)
   local iWidth, iHeight = ScrW(), ScrH()
