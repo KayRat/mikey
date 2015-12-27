@@ -109,7 +109,7 @@ function PANEL:SetSelected(bSelected)
   end
 end
 
---PANEL.setSelected = PANEL.SetSelected
+PANEL.setSelected = PANEL.SetSelected
 
 function PANEL:IsSelected()
   return self.m_bSelected
