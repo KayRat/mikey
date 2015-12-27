@@ -20,7 +20,6 @@ mikey.network.receive("joinleave.join", function(tblData)
   else
     tblMessage = {
       mikey.colors.alt,       "→ ",
-      --color_white,            "Player ",
       mikey.colors.primary,   strNick,
       color_white,            " has",
       mikey.colors.alt,       " connected",
