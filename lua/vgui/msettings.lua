@@ -46,6 +46,7 @@ function PANEL:PerformLayout(iWidth, iHeight)
   if(LocalPlayer():IsAdmin()) then
     self.m_Settings:SetWide(iWidth / 2)
     self.m_Settings:Dock(LEFT)
+    self.m_Disguise:SetVisible(true)
     self.m_Disguise:Dock(FILL)
   else
     self.m_Disguise:SetVisible(false)
