@@ -14,7 +14,7 @@ end
 function PANEL:PerformLayout(iWidth, iHeight)
   local iOneThird = math.Round(iWidth / 3)
 
-  self.m_pnlPlayerList:SetWide(iOneThird*2)
+  self.m_pnlPlayerList:SetWide(iOneThird*2.25)
   --self.m_pnlActionList:SetWide(iOneThird)
 end
 
