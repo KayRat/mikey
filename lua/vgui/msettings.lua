@@ -34,7 +34,7 @@ function PANEL:Init()
 
   local objDisguise = vgui.Create("MButton", self)
   objDisguise:SetText("Disguise")
-  objDisguise:SetIcon("icon16/status_online.png")
+  objDisguise:SetIcon("icon16/find.png")
   objDisguise:Dock(LEFT)
   objDisguise:DockMargin(4, 0, 0, 0)
 
