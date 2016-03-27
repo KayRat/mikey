@@ -11,75 +11,75 @@ local function makeStringMethodSafe(str)
   return str
 end
 
-mikey.ranks.setDefault = function(rank)
-  mikey.ranks.default = rank
+mikey.ranks.setDefault = function(objRank)
+  mikey.ranks.default = objRank
 end
 
 mikey.ranks.getDefault = function()
   return mikey.ranks.default
 end
 
-mikey.ranks.exists = function(rank)
+mikey.ranks.exists = function(objRank)
   if(rank == nil) then return false end
 
-  return mikey.ranks.list[rank] ~= nil
+  return mikey.ranks.list[objRank] ~= nil
 end
 
 mikey.ranks.getAll = function()
-  return mikey.ranks.list
+  return table.Copy(mikey.ranks.list)
 end
 
-mikey.ranks.get = function(rank)
-  return mikey.ranks.list[rank]
+mikey.ranks.get = function(strRank)
+  return mikey.ranks.list[strRank]
 end
 
-mikey.ranks.create = function(rankName, weight, aliases)
-  if(mikey.ranks.exists(rankName)) then
-    mikey.log.warn("Rank '%s' already exists; overwriting", (type(rankName) == "string" and rankName or rankName:getName()))
+mikey.ranks.create = function(strRank, iWeight, tblAliases)
+  if(mikey.ranks.exists(strRank)) then
+    mikey.log.warn("Rank '%s' already exists; overwriting", (type(strRank) == "string" and strRank or strRank:getName()))
   end
 
-  weight = weight or 1
-  aliases = aliases or {}
+  iWeight = iWeight or 1
+  tblAliases = tblAliases or {}
 
   local skeleton = {
     -- data
-    ["__rankName"] = rankName,
-    ["__weight"] = weight,
+    ["__strRank"] = strRank,
+    ["__iWeight"] = iWeight,
 
     -- functions
-    ["getName"] = function(self) return self.__rankName end,
-    ["getWeight"] = function(self) return self.__weight end,
+    ["getName"] = function(self) return self.__strRank end,
+    ["getWeight"] = function(self) return self.__iWeight end,
   }
 
   skeleton.__index = skeleton
 
-  local newRank = {}
-  setmetatable(newRank, skeleton)
+  local objRank = {}
+  setmetatable(objRank, skeleton)
 
-  local function isThisRank(pl)
-    return pl:getRank():getWeight() >= newRank:getWeight()
+  local function isThisRank(objPl)
+    return objPl:getRank():getWeight() >= objRank:getWeight()
   end
 
-  local checkName = makeStringMethodSafe(newRank:getName())
-  pl["is"..checkName] = isThisRank
-  pl["Is"..checkName] = isThisRank
+  local strSafeName = makeStringMethodSafe(objRank:getName())
+  pl["is"..strSafeName] = isThisRank
+  pl["Is"..strSafeName] = isThisRank
 
-  if(not mikey.ranks.getDefault() or mikey.ranks.getDefault():getWeight() > newRank:getWeight()) then
-    mikey.ranks.setDefault(newRank)
+  if(not mikey.ranks.getDefault() or mikey.ranks.getDefault():getWeight() > objRank:getWeight()) then
+    mikey.ranks.setDefault(objRank)
   end
 
-  mikey.ranks.list[newRank:getName()] = newRank
-  mikey.ranks.list[newRank:getWeight()] = newRank
+  mikey.ranks.list[objRank:getName()] = objRank
+  mikey.ranks.list[objRank:getWeight()] = objRank
 
-  for k,v in pairs(aliases) do
+  for k,v in pairs(tblAliases) do
     v = makeStringMethodSafe(v)
-    mikey.ranks.list[v] = newRank
+    mikey.ranks.list[v] = objRank
 
     pl["is"..v] = isThisRank
     pl["Is"..v] = isThisRank
   end
 
-  return newRank
+  return objRank
 end
 
 pl.getRankName = function(self)
@@ -90,16 +90,16 @@ pl.getRank = function(self)
   return mikey.ranks.get(self:getRankName())
 end
 
-pl.setRank = function(self, rank)
-  if(not mikey.ranks.exists(rank)) then
-    mikey.log.error("Rank '"..rank.."' cannot be assigned to '"..self:Nick().."': rank not found")
+pl.setRank = function(self, strRank)
+  if(not mikey.strRanks.exists(strRank)) then
+    mikey.log.error("Rank '"..strRank.."' cannot be assigned to '"..self:Nick().."': rank not found")
     return
   end
 
-  self:setNWVar("mikey.rank", rank)
+  self:setNWVar("mikey.rank", strRank)
 end
 
-pl.setUserGroup = function(self, group)
+pl.setUserGroup = function(self, strGroup)
   return false
 end
 
@@ -107,8 +107,8 @@ pl.getUserGroup = function(self)
   return self:getRankName()
 end
 
-pl.isUserGroup = function(self, group)
-  return self:getUserGroup() == group
+pl.isUserGroup = function(self, strGroup)
+  return self:getUserGroup() == strGroup
 end
 
 pl.SetUserGroup = pl.setUserGroup
