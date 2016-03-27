@@ -1,4 +1,4 @@
-hook.Add("mikey.ranks.load", "defaultRanks", function()
+hook.Add("mikey.ranks.load", "zzzzzz_defaultRanks", function()
   mikey.ranks.create("Guest", 1)
 
   mikey.ranks.create("Moderator", 8, {"Mod"})
