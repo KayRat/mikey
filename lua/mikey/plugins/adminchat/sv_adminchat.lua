@@ -18,7 +18,7 @@ hook.Add("PlayerSay", "mikey.plugins.adminchat", function(objPl, strText, iTeam)
 
       MsgC(
         team.GetColor(objPl:Team()),  objPl:Nick(),
-        color_white,                  "("..objPl:SteamID()..")",
+        color_white,                  " ("..objPl:SteamID()..")",
         color_white,                  " to staff: "..strText.."\n"
       )
     else
