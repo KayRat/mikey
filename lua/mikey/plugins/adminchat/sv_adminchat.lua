@@ -22,7 +22,7 @@ hook.Add("PlayerSay", "mikey.plugins.adminchat", function(objPl, strText, iTeam)
         color_white,                  " to staff: "..strText.."\n"
       )
     else
-      objPl:sendMessage(mikey.colors.error, "[!] ", color_white, "You must enter a message to send to staff members!")
+      objPl:sendMessage(mikey.colors.error, "[!] ", color_white, "You must enter a message to send to staff members!") -- TODO: error message that doesn't hang around chat
     end
 
     return ""
