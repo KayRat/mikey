@@ -33,22 +33,25 @@ mikey.ranks.get = function(strRank)
   return mikey.ranks.list[strRank]
 end
 
-mikey.ranks.create = function(strRank, iWeight, tblAliases)
+mikey.ranks.create = function(strRank, iWeight, tblPermissions, tblAliases)
   if(mikey.ranks.exists(strRank)) then
     mikey.log.warn("Rank '%s' already exists; overwriting", (type(strRank) == "string" and strRank or strRank:getName()))
   end
 
-  iWeight = iWeight or 1
-  tblAliases = tblAliases or {}
+  iWeight         = iWeight or 1
+  tblPermissions  = tblPermissions or {}
+  tblAliases      = tblAliases or {}
 
   local skeleton = {
     -- data
-    ["__strRank"] = strRank,
-    ["__iWeight"] = iWeight,
+    ["__strRank"]         = strRank,
+    ["__iWeight"]         = iWeight,
+    ["__tblPermissions"]  = {},
 
     -- functions
-    ["getName"] = function(self) return self.__strRank end,
-    ["getWeight"] = function(self) return self.__iWeight end,
+    ["getName"]         = function(self) return self.__strRank end,
+    ["getWeight"]       = function(self) return self.__iWeight end,
+    ["getPermissions"]  = function(self) return table.Copy(self.__tblPermissions) end,
   }
 
   skeleton.__index = skeleton
@@ -82,7 +85,61 @@ mikey.ranks.create = function(strRank, iWeight, tblAliases)
   return objRank
 end
 
+--[[
+{
+  "1": {
+    "id": 1,
+    "name": "Guest",
+    "weight": 1,
+  },
+  "2": {
+    "id": 2,
+    "name": "Moderator",
+    "weight": 2,"
+    "permissions": {
+      "menu",
+      "kick",
+      "ban",
+      "adminchat",
+      "slay"
+    },
+    "aliases": {
+      "Mod"
+    }
+  },
+  "3": {
+    "id": 3,
+    "name": "Regional Manager",
+    "weight": 10,
+    "permissions": {
+      "lua"
+    }
+  }
+}
+]]
+
+mikey.ranks.refresh = function()
+  mikey.api.get("ranks/getAll", function(tblData)
+    if(not tblData) then
+      mikey.log.error("data parse failed on rank fetch")
+      return
+    end
+
+    if(#tblData <= 0) then
+      mikey.log.error("found 0 configured ranks")
+      return
+    end
+
+    for k,tblRank in pairs(tblData) do
+      mikey.ranks.create(tblData["name"], tblData["weight"], tblData["permissions"], tblData["aliases"])
+    end
+  end, function(strError)
+    mikey.log.error("Error getting ranks: "..strError)
+  end)
+end
+
 pl.getRankName = function(self)
+  if(not mikey.ranks.getDefault()) then return "ERROR" end
   return self:getNWVar("mikey.rank", mikey.ranks.getDefault():getName())
 end
 
@@ -115,14 +172,10 @@ pl.SetUserGroup = pl.setUserGroup
 pl.GetUserGroup = pl.getUserGroup
 pl.IsUserGroup = pl.isUserGroup
 
-hook.Add("InitPostEntity", "mikey.ranks.loadRanks", function()
-  hook.Call("mikey.ranks.preLoad", nil)
+hook.Add("mikey.auth.completed", "mikey.ranks.loadRanks", function()
   hook.Call("mikey.ranks.load", nil)
-  hook.Call("mikey.ranks.postLoad", nil)
 end)
 
-hook.Add("mikey.ranks.postLoad", "checkForRanks", function()
-  if(not mikey.ranks.getDefault()) then
-    mikey.log.error("No default rank found; no ranks loaded. Nothing will work, so you should probably fix that")
-  end
+hook.Add("mikey.ranks.load", "mikey.ranks.fetch", function()
+  mikey.ranks.refresh()
 end)
