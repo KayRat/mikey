@@ -6,7 +6,7 @@ hook.Add("PlayerSay", "mikey.plugins.adminchat", function(objPl, strText, iTeam)
       local tblTargets = {objPl}
 
       for k,v in pairs(player.GetAll()) do
-        if(v ~= objPl and v:isMod()) then
+        if(v ~= objPl and v:hasPermission("adminchat")) then
           table.insert(tblTargets, v)
         end
       end

@@ -3,7 +3,7 @@ local objMenu = mikey.commands.new("menu", "Show the menu")
 function objMenu:canUserRun(objPl)
     if(not IsValid(objPl)) then return mikey.commands.error.NO_CONSOLE end
 
-    return objPl:isMod() or mikey.commands.error.NO_PERMISSION
+    return objPl:hasPermission("menu") or mikey.commands.error.NO_PERMISSION
 end
 
 function objMenu:onRun(objPl, strCmd, tblArgs)

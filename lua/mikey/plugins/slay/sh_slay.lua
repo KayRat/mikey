@@ -12,7 +12,7 @@ PLUGIN.canUserRun = function(self, objPl, strCmd, tblArgs)
     return mikey.permission.NO_CONSOLE
   end
 
-  if(objPl:IsMod()) then return true end
+  if(objPl:hasPermission("slay")) then return true end
 
   return mikey.permission.NONE
 end

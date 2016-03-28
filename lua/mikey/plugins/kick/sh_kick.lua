@@ -12,7 +12,7 @@ PLUGIN.canUserRun = function(self, objPl)
     return mikey.permission.NO_CONSOLE
   end
 
-  if(objPl:isMod()) then
+  if(objPl:hasPermission("kick")) then
     return true
   end
 
