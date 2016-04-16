@@ -1,3 +1,4 @@
+include("autorun/simploo.lua")
 mikey = mikey or {}
 
 local function loadDirectory(strDir)
@@ -41,6 +42,7 @@ local function loadDirectory(strDir)
   end
 end
 
+loadDirectory("objects")
 loadDirectory("runtime")
 loadDirectory("plugins")
 
