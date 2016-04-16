@@ -149,10 +149,13 @@ hook.Add("mikey.auth.completed", "mikey.ranks.loadRanks", function()
   hook.Call("mikey.ranks.load", nil)
 end)
 
+hook.Add("mikey.ranks.load", "mikey.ranks.addGuest", function()
+  mikey.ranks.create("Guest", 1, {
+    "useAdminChat",
+    "menu"
+  })
+end)
+
 hook.Add("mikey.ranks.load", "mikey.ranks.fetch", function()
   mikey.ranks.refresh()
 end)
-
-do -- set up guest rank
-  mikey.ranks.create("Guest", 1, {"useAdminChat", "menu"})
-end
