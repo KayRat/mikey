@@ -154,9 +154,5 @@ hook.Add("mikey.ranks.load", "mikey.ranks.fetch", function()
 end)
 
 do -- set up guest rank
-  if(not mikey.ranks.exists("Guest")) then
-    mikey.ranks.create("Guest", 1, {"useAdminChat", "menu"})
-  else
-    print("found")
-  end
+  mikey.ranks.create("Guest", 1, {"useAdminChat", "menu"})
 end
