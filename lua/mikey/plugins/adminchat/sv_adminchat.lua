@@ -1,12 +1,16 @@
 hook.Add("PlayerSay", "mikey.plugins.adminchat", function(objPl, strText, iTeam)
   if(string.sub(strText, 1, 1) == "@") then
+    if(not objPl:hasPermission("useAdminChat")) then
+      return strText
+    end
+
     strText = string.sub(strText, 2)
 
     if(string.len(strText) > 0) then
       local tblTargets = {objPl}
 
       for k,v in pairs(player.GetAll()) do
-        if(v ~= objPl and v:hasPermission("adminchat")) then
+        if(v ~= objPl and v:hasPermission("seeAdminChat")) then
           table.insert(tblTargets, v)
         end
       end
