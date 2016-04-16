@@ -8,12 +8,12 @@ local strToken = nil
 local objAPIURL = CreateConVar("mikey_api_url", "", {
   FCVAR_PROTECTED,
   FCVAR_SERVER_CAN_EXECUTE,
-}, "The URL of mikey's API")
+}, "The URL of the mikey API")
 
 local objAPIKey = CreateConVar("mikey_api_key", "", {
   FCVAR_PROTECTED,
   FCVAR_SERVER_CAN_EXECUTE,
-}, "The key for mikey's API")
+}, "This server's key for the mikey API")
 
 local function getURL()
   return objAPIURL:GetString()
@@ -31,16 +31,17 @@ local function buildURL(...)
   return getURL()..table.concat({...}, "/")
 end
 
-function mikey.api.get(strURL, objSuccess, objFail)
+mikey.api.get = function(strURL, objSuccess, objFail)
   http.Post(buildURL(strURL), {
     ["token"] = getToken()
   }, function(strResponse, iLength, tblHeaders, iStatusCode)
+    -- TODO: check response for proper formatting, check status codes, etc etc
     local tblResponse = util.JSONToTable(strResponse)
     objSuccess(table.Copy(tblResponse))
   end, objFail)
 end
 
-do -- server authentication
+do -- Server Authentication
   local function doPostAuth()
     hook.Call("mikey.auth.completed")
   end
@@ -52,7 +53,7 @@ do -- server authentication
 
   local function onFailedAuth(strError)
     mikey.log.error("api failed to do authentication: "..strError)
-      doPostAuth()
+    doPostAuth()
   end
 
   hook.Add("Initialize", "mikey.api.authenticate", function()
@@ -64,6 +65,13 @@ do -- server authentication
   end)
 end
 
+mikey.api.put = function(strURL, tblData, objSuccess, objFail)
+end
+
+-- I prefer to send this via a net message because it makes it *slightly* more difficult to snoop
+-- Granted if you want to snoop this won't really stop you
+-- Not to mention all clientside requests are to the public API
+-- So like, authentication man
 do -- send client info
   hook.Add("PlayerInitialSpawn", "mikey.api.sendInfo", function(objPl)
     net.Start("mikey.api.info")
