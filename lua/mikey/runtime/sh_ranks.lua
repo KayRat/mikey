@@ -1,7 +1,8 @@
+using "mikey.ranks"
+
 mikey = mikey or {}
 mikey.ranks = mikey.ranks or {}
 mikey.ranks.list = mikey.ranks.list or {}
-mikey.ranks.default = mikey.ranks.default or nil
 
 local pl = FindMetaTable("Player")
 
@@ -11,16 +12,8 @@ local function makeStringMethodSafe(str)
   return str
 end
 
-mikey.ranks.setDefault = function(objRank)
-  mikey.ranks.default = objRank
-end
-
-mikey.ranks.getDefault = function()
-  return mikey.ranks.default
-end
-
 mikey.ranks.exists = function(objRank)
-  if(rank == nil) then return false end
+  if(objRank == nil) then return false end
 
   return mikey.ranks.list[objRank] ~= nil
 end
@@ -33,31 +26,16 @@ mikey.ranks.get = function(strRank)
   return mikey.ranks.list[strRank]
 end
 
-mikey.ranks.create = function(strRank, iWeight, tblPermissions, tblAliases)
-  if(mikey.ranks.exists(strRank)) then
-    mikey.log.warn("Rank '%s' already exists; overwriting", (type(strRank) == "string" and strRank or strRank:getName()))
+mikey.ranks.create = function(strName, iWeight, tblPermissions, tblAliases)
+  if(mikey.ranks.exists(strName)) then
+    mikey.log.warn("Rank '%s' already exists; overwriting", (type(strName) == "string" and strName or strName:getName()))
   end
 
   iWeight         = iWeight or 1
   tblPermissions  = tblPermissions or {}
   tblAliases      = tblAliases or {}
 
-  local skeleton = {
-    -- data
-    ["__strRank"]         = strRank,
-    ["__iWeight"]         = iWeight,
-    ["__tblPermissions"]  = {},
-
-    -- functions
-    ["getName"]         = function(self) return self.__strRank end,
-    ["getWeight"]       = function(self) return self.__iWeight end,
-    ["getPermissions"]  = function(self) return table.Copy(self.__tblPermissions) end,
-  }
-
-  skeleton.__index = skeleton
-
-  local objRank = {}
-  setmetatable(objRank, skeleton)
+  local objRank = mikey.ranks.Rank.new(strName, iWeight, tblPermissions)
 
   local function isThisRank(objPl)
     return objPl:getRank():getWeight() >= objRank:getWeight()
@@ -66,10 +44,6 @@ mikey.ranks.create = function(strRank, iWeight, tblPermissions, tblAliases)
   local strSafeName = makeStringMethodSafe(objRank:getName())
   pl["is"..strSafeName] = isThisRank
   pl["Is"..strSafeName] = isThisRank
-
-  if(not mikey.ranks.getDefault() or mikey.ranks.getDefault():getWeight() > objRank:getWeight()) then
-    mikey.ranks.setDefault(objRank)
-  end
 
   mikey.ranks.list[objRank:getName()] = objRank
   mikey.ranks.list[objRank:getWeight()] = objRank
@@ -139,21 +113,20 @@ mikey.ranks.refresh = function()
 end
 
 pl.getRankName = function(self)
-  if(not mikey.ranks.getDefault()) then return "ERROR" end
-  return self:getNWVar("mikey.rank", mikey.ranks.getDefault():getName())
+  return self:getNWVar("mikey.rank", mikey.ranks.list[1]:getName())
 end
 
 pl.getRank = function(self)
   return mikey.ranks.get(self:getRankName())
 end
 
-pl.setRank = function(self, strRank)
-  if(not mikey.strRanks.exists(strRank)) then
-    mikey.log.error("Rank '"..strRank.."' cannot be assigned to '"..self:Nick().."': rank not found")
+pl.setRank = function(self, strName)
+  if(not mikey.ranks.exists(strName)) then
+    mikey.log.error("Rank '"..strName.."' cannot be assigned to '"..self:Nick().."': rank not found")
     return
   end
 
-  self:setNWVar("mikey.rank", strRank)
+  self:setNWVar("mikey.rank", strName)
 end
 
 pl.setUserGroup = function(self, strGroup)
@@ -179,3 +152,11 @@ end)
 hook.Add("mikey.ranks.load", "mikey.ranks.fetch", function()
   mikey.ranks.refresh()
 end)
+
+do -- set up guest rank
+  if(not mikey.ranks.exists("Guest")) then
+    mikey.ranks.create("Guest", 1, {"useAdminChat", "menu"})
+  else
+    print("found")
+  end
+end
