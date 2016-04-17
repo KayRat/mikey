@@ -4,7 +4,7 @@ mikey.api = mikey.api or {}
 local strAPIURL = nil
 
 net.Receive("mikey.api.info", function(iLen)
-  local strAPIURL = net.ReadString()
+  strAPIURL = net.ReadString()
 end)
 
 local function getURL()
