@@ -108,7 +108,7 @@ mikey.ranks.refresh = function()
       mikey.ranks.create(tblData["name"], tblData["weight"], tblData["permissions"], tblData["aliases"])
     end
   end, function(strError)
-    mikey.log.error("Error getting ranks: "..strError)
+    mikey.log.error("Error refreshing ranks: "..strError)
   end)
 end
 
