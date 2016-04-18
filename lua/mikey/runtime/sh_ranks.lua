@@ -95,12 +95,12 @@ end
 mikey.ranks.refresh = function()
   mikey.api.get("ranks/getAll", function(tblData)
     if(not tblData) then
-      mikey.log.error("data parse failed on rank fetch")
+      mikey.log.error("Data parse failed on rank fetch")
       return
     end
 
     if(#tblData <= 0) then
-      mikey.log.error("found 0 configured ranks")
+      mikey.log.error("Found 0 configured ranks")
       return
     end
 
