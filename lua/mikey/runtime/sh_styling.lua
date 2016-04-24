@@ -1,9 +1,9 @@
 mikey = mikey or {}
 mikey.colors = {
-    ["error"] = Color(214, 30, 30),
-    ["info"] = Color(150, 30, 214),
-    ["outside"] = Color(30, 55, 214),
-    ["warning"] = Color(214, 202, 30),
+    ["error"]     = Color(214, 30, 30, 255),
+    ["info"]      = Color(150, 30, 214, 255),
+    ["outside"]   = Color(30, 55, 214, 255),
+    ["warning"]   = Color(214, 202, 30, 255),
 
     ["primary"]   = Color(255, 255, 157, 255),
     ["secondary"] = Color(255, 97, 56, 255),
