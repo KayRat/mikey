@@ -1,12 +1,12 @@
 local PANEL = {}
 
 function PANEL:Init()
-  local pnlIconLayout = vgui.Create("DIconLayout", self)
-  pnlIconLayout:DockMargin(5, 5, 5, 5)
-  pnlIconLayout:DockPadding(5, 5, 5, 5)
+  local pnlIconLayout = vgui.Create("DListLayout", self)
+  pnlIconLayout:DockMargin(4, 4, 4, 4)
+  pnlIconLayout:DockPadding(4, 4, 4, 4)
   pnlIconLayout:Dock(TOP)
-  pnlIconLayout:SetSpaceX(4)
-  pnlIconLayout:SetSpaceY(4)
+  --pnlIconLayout:SetSpaceX(4)
+  --pnlIconLayout:SetSpaceY(4)
   pnlIconLayout.onPlayerSelected = self.onPlayerSelected
   pnlIconLayout.onPlayerDeselected = self.onPlayerDeselected
 
@@ -59,10 +59,10 @@ end
 local tblPlayerCards = {}
 
 function PANEL:addPlayerCard(objPl)
-  local iCardWidth, iCardHeight = 136, 136 -- TODO: select size based on parent
+  local iCardHeight = 42 -- TODO: select size based on parent
 
   local pnl = self.m_pnlIconLayout:Add("MPlayerCard")
-  pnl:SetSize(iCardWidth, iCardHeight)
+  pnl:SetTall(iCardHeight)
   pnl:setPlayer(objPl)
   pnl:SetParent(self.m_pnlIconLayout)
 
