@@ -8,7 +8,7 @@ function PANEL:Init()
   objSettings:SetIcon("icon16/cog.png")
   objSettings:Dock(LEFT)
   objSettings.DoClick = function(selfButton)
-    local objNoFunction = vgui.Create("MModal", self:GetParent():GetParent())
+    local objNoFunction = vgui.Create("MModal", self:GetParent():GetParent():GetParent())
     objNoFunction:SetTitle("information")
     objNoFunction:SetSize(150, 90)
     objNoFunction:Center()
@@ -17,7 +17,7 @@ function PANEL:Init()
     objText:Dock(FILL)
     objText:SetTextColor(color_black)
     objText:SetWrap(true)
-    objText:SetText("this feature is set for a feature release. check back soon!")
+    objText:SetText("this feature is set for a future release. check back soon!")
 
     local objClose = vgui.Create("MButton", objNoFunction)
     objClose:SetText("Close")
@@ -43,14 +43,14 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout(iWidth, iHeight)
-  if(LocalPlayer():IsAdmin()) then
+  if(LocalPlayer():hasPermission("disguise")) then
     self.m_Settings:SetWide(iWidth / 2)
     self.m_Settings:Dock(LEFT)
     self.m_Disguise:SetVisible(true)
     self.m_Disguise:Dock(FILL)
   else
     self.m_Disguise:SetVisible(false)
-    self.m_Settings:Dock(LEFT)
+    self.m_Settings:Dock(FILL)
   end
 end
 
