@@ -17,9 +17,9 @@ surface.CreateFont("MButtonDefault", {
 })
 
 surface.CreateFont("PlayerCardName", {
-  ["font"]      = "DermaDefault",
-  ["size"]      = 16,
-  ["weight"]    = 600,
+  ["font"]      = "DermaDefaultBold",
+  ["size"]      = 22,
+  ["weight"]    = 500,
   ["antialias"] = true,
   ["outline"]   = false,
 })
