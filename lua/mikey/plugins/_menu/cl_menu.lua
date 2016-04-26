@@ -9,11 +9,12 @@ local tblTitles = {
   "feat. some admin tools",
   "feat. Pitbull",
   "michael scott approved",
-  "now with 20% fewer inconsistencies",
+  "now with 20% extra inconsistencies",
   "super duper hacky version",
   "assistant (to the) regional manager",
   "isn't this random title a waste of CPU?",
   os.time(),
+  math.Round(os.time()*.25),
 }
 
 local function refreshCards(objEnt)
