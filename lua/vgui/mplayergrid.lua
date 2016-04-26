@@ -1,14 +1,13 @@
 local PANEL = {}
 
 function PANEL:Init()
-  local pnlIconLayout = vgui.Create("DListLayout", self)
-  pnlIconLayout:DockMargin(4, 4, 4, 4)
-  pnlIconLayout:DockPadding(4, 4, 4, 4)
-  pnlIconLayout:Dock(TOP)
+  local pnlIconLayout = vgui.Create("DListLayout")
   --pnlIconLayout:SetSpaceX(4)
   --pnlIconLayout:SetSpaceY(4)
   pnlIconLayout.onPlayerSelected = self.onPlayerSelected
   pnlIconLayout.onPlayerDeselected = self.onPlayerDeselected
+
+  self:AddItem(pnlIconLayout)
 
   self.m_pnlIconLayout = pnlIconLayout
 end
@@ -16,9 +15,13 @@ end
 function PANEL:PerformLayout(iWidth, iHeight)
   self.BaseClass.PerformLayout(self, iWidth, iHeight)
 
-  if(not self.VBar.Enabled) then
+  if(not self:GetVBar().Enabled) then
     self.VBar:SetEnabled(true)
   end
+
+  self.m_pnlIconLayout:DockMargin(4, 4, self:GetVBar():GetWide(), 4)
+  self.m_pnlIconLayout:DockPadding(2, 2, 2, 4)
+  self.m_pnlIconLayout:Dock(FILL)
 end
 
 function PANEL:clearPlayerList()

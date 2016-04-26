@@ -50,46 +50,52 @@ end
 PANEL.m_iSelectionWidth = 0
 
 function PANEL:Paint(iWidth, iHeight)
-  surface.SetDrawColor(0, 0, 0, 255)
-  surface.DrawOutlinedRect(0, 0, iWidth, iHeight)
+  local iCardSection = math.ceil(iHeight/14)
 
-  local iPiece = self:IsSelected() and math.floor(iWidth*0.02) or 0
-  self.m_iSelectionWidth = math.Approach(self.m_iSelectionWidth, iPiece, 0.5)
+  local iIsSelectedWidth = self:IsSelected() and math.ceil(iWidth*0.015) or 0
+  self.m_iSelectionWidth = math.Approach(self.m_iSelectionWidth, iIsSelectedWidth, 1)
 
   local objTeamColor = team.GetColor(self:getPlayer():Team()) or color_white
-  local iOffset = self:IsSelected() and self.m_iSelectionWidth or 0
+  local iIsSelectedOffset = self:IsSelected() and self.m_iSelectionWidth or 0
+
+  surface.SetDrawColor(0, 0, 0, 255)
+  surface.DrawOutlinedRect(self.avatar:GetWide(), iCardSection, iWidth-self.avatar:GetWide(), iHeight-iCardSection*2)
 
   surface.SetDrawColor(objTeamColor)
-  surface.DrawRect(self.avatar:GetWide(), 1, iWidth-iOffset-2, iHeight-2)
+  surface.DrawRect(self.avatar:GetWide(), iCardSection+1, iWidth-self.avatar:GetWide()-iIsSelectedOffset-1, iHeight-iCardSection*2-2)
 
-  if(not self:IsHovered() and not self:IsChildHovered(6) and not self:IsSelected()) then return end
+  --if(not self:IsHovered() and not self:IsChildHovered(6) and not self:IsSelected()) then return end
 
-  --if(self:IsSelected() or self.avatar:GetWide() ~= self:GetWide()) then
   if(self.m_iSelectionWidth > 0) then
     surface.SetDrawColor(color_black)
-    surface.DrawLine(iWidth-self.m_iSelectionWidth-1, 1, iWidth-self.m_iSelectionWidth-1, iHeight-1)
+    surface.DrawLine(iWidth-self.m_iSelectionWidth-1, iCardSection+1, iWidth-self.m_iSelectionWidth-1, iHeight-iCardSection-1)
 
     surface.SetDrawColor(self.m_tblColors.onSelected)
-    surface.DrawRect(iWidth-self.m_iSelectionWidth, 1, iWidth-1, iHeight-2)
+    surface.DrawRect(iWidth-self.m_iSelectionWidth, iCardSection+1, self.m_iSelectionWidth-1, iHeight-iCardSection*2-2)
   end
 end
 
 function PANEL:PaintOver(iWidth, iHeight)
-  local strName = self:getPlayer():Nick() or "..."
+  local strName = IsValid(self:getPlayer()) and self:getPlayer():Nick() or "..."
 
   surface.SetFont("PlayerCardName")
   local iNameHeight = select(2, surface.GetTextSize(string.sub(strName, 1, 1)))
+  local iNameY = iHeight/2-(iNameHeight/2)-1
 
-  draw.SimpleTextOutlined(strName,
+  surface.SetTextPos(self.avatar:GetWide()+4, iNameY)
+  surface.SetTextColor(color_black)
+  surface.DrawText(strName)
+
+  --[[draw.SimpleTextOutlined(strName,
     "PlayerCardName",
-    self.avatar:GetWide()+4,
-    iNameHeight,
+    self.avatar:GetWide()+6,
+    iNameY,
     color_white,
     TEXT_ALIGN_LEFT,
     TEXT_ALIGN_CENTER,
     1,
     color_black
-  )
+  )]]
 end
 
 function PANEL:SetSelected(bSelected)
@@ -116,7 +122,7 @@ end
 
 function PANEL:setPlayer(objPl)
   self.m_objPlayer = objPl
-  self.avatar:SetPlayer(objPl, self:GetWide())
+  self.avatar:SetPlayer(objPl, 64)
   self.m_strUniqueID = objPl:UniqueID()
 end
 
