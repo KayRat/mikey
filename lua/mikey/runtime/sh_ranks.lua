@@ -145,6 +145,18 @@ pl.SetUserGroup = pl.setUserGroup
 pl.GetUserGroup = pl.getUserGroup
 pl.IsUserGroup = pl.isUserGroup
 
+pl.isAdmin = function(self)
+  return self:hasPermission("isAdmin")
+end
+
+pl.IsAdmin = pl.isAdmin
+
+pl.isSuperAdmin = function(self)
+  return self:hasPermission("isSuperAdmin")
+end
+
+pl.IsSuperAdmin = pl.isSuperAdmin
+
 hook.Add("mikey.auth.completed", "mikey.ranks.loadRanks", function()
   hook.Call("mikey.ranks.load", nil)
 end)
