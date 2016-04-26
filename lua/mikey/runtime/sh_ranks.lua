@@ -59,59 +59,6 @@ mikey.ranks.create = function(strName, iWeight, tblPermissions, tblAliases)
   return objRank
 end
 
---[[
-{
-  "1": {
-    "id": 1,
-    "name": "Guest",
-    "weight": 1,
-  },
-  "2": {
-    "id": 2,
-    "name": "Moderator",
-    "weight": 2,"
-    "permissions": {
-      "menu",
-      "kick",
-      "ban",
-      "adminchat",
-      "slay"
-    },
-    "aliases": {
-      "Mod"
-    }
-  },
-  "3": {
-    "id": 3,
-    "name": "Regional Manager",
-    "weight": 10,
-    "permissions": {
-      "lua"
-    }
-  }
-}
-]]
-
-mikey.ranks.refresh = function()
-  mikey.api.get("ranks/getAll", function(tblData)
-    if(not tblData) then
-      mikey.log.error("Data parse failed on rank fetch")
-      return
-    end
-
-    if(#tblData <= 0) then
-      mikey.log.error("Found 0 configured ranks")
-      return
-    end
-
-    for k,tblRank in pairs(tblData) do
-      mikey.ranks.create(tblData["name"], tblData["weight"], tblData["permissions"], tblData["aliases"])
-    end
-  end, function(strError)
-    mikey.log.error("Error refreshing ranks: "..strError)
-  end)
-end
-
 pl.getRankName = function(self)
   return self:getNWVar("mikey.rank", mikey.ranks.list[1]:getName())
 end
@@ -157,7 +104,7 @@ end
 
 pl.IsSuperAdmin = pl.isSuperAdmin
 
-hook.Add("mikey.auth.completed", "mikey.ranks.loadRanks", function()
+hook.Add("Initialize", "mikey.ranks.loadRanks", function()
   hook.Call("mikey.ranks.load", nil)
 end)
 
@@ -166,8 +113,4 @@ hook.Add("mikey.ranks.load", "mikey.ranks.addGuest", function()
     "useAdminChat",
     "menu"
   })
-end)
-
-hook.Add("mikey.ranks.load", "mikey.ranks.fetch", function()
-  mikey.ranks.refresh()
 end)
