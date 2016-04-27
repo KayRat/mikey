@@ -1,13 +1,11 @@
 local PANEL = {}
 
 function PANEL:Init()
-  local pnlIconLayout = vgui.Create("DListLayout")
-  --pnlIconLayout:SetSpaceX(4)
-  --pnlIconLayout:SetSpaceY(4)
+  local pnlIconLayout = vgui.Create("DIconLayout", self)
+  pnlIconLayout:SetSpaceX(4)
+  pnlIconLayout:SetSpaceY(4)
   pnlIconLayout.onPlayerSelected = self.onPlayerSelected
   pnlIconLayout.onPlayerDeselected = self.onPlayerDeselected
-
-  self:AddItem(pnlIconLayout)
 
   self.m_pnlIconLayout = pnlIconLayout
 end
@@ -15,12 +13,7 @@ end
 function PANEL:PerformLayout(iWidth, iHeight)
   self.BaseClass.PerformLayout(self, iWidth, iHeight)
 
-  if(not self:GetVBar().Enabled) then
-    self.VBar:SetEnabled(true)
-  end
-
-  self.m_pnlIconLayout:DockMargin(4, 4, self:GetVBar():GetWide(), 4)
-  self.m_pnlIconLayout:DockPadding(2, 2, 2, 4)
+  self.m_pnlIconLayout:DockMargin(6, 6, self:GetVBar().Enabled and 10 or 4, 0)
   self.m_pnlIconLayout:Dock(FILL)
 end
 
@@ -66,8 +59,10 @@ function PANEL:addPlayerCard(objPl)
 
   local pnl = self.m_pnlIconLayout:Add("MPlayerCard")
   pnl:SetTall(iCardHeight)
+  pnl:DockMargin(0, 0, 0, 5)
+  pnl:Dock(TOP)
   pnl:setPlayer(objPl)
-  pnl:SetParent(self.m_pnlIconLayout)
+  --pnl:SetParent(self.m_pnlIconLayout)
 
   if(self:GetParent():isPlayerSelected(objPl:UniqueID())) then
     pnl:setSelected(true)
@@ -81,7 +76,6 @@ function PANEL:hasPlayerCard(strUniqueID)
 end
 
 function PANEL:removePlayerCard(strUniqueID)
-  PrintTable(self:getPlayerCards())
   for k,v in pairs(self:getPlayerCards()) do
     if(v:getUniqueID() == strUniqueID) then
       v:Remove()
@@ -93,7 +87,7 @@ function PANEL:removePlayerCard(strUniqueID)
   tblPlayerCards[strUniqueID] = nil
 end
 
-function PANEL:Paint(iWidth, iHeight)
+function PANEL:PaintOver(iWidth, iHeight)
   surface.SetDrawColor(0, 0, 0)
   surface.DrawOutlinedRect(0, 0, iWidth, iHeight)
 end

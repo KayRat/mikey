@@ -45,7 +45,7 @@ mikey.network.receive("mikey.menu.open", function(tblData)
     objMenu:Center()
 
     local pnlCanvas = vgui.Create("MCanvas", objMenu)
-    pnlCanvas:DockMargin(2, 2, 2, 2)
+    pnlCanvas:DockMargin(0, 2, 0, 0)
     pnlCanvas:DockPadding(4, 4, 4, 4)
     pnlCanvas:Dock(FILL)
 
