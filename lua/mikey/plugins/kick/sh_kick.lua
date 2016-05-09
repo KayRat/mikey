@@ -2,7 +2,7 @@ local PLUGIN = mikey.plugins.get()
 
 PLUGIN["Menu"] = {
   ["Category"]      = mikey.menu.category.ADMIN,
-  ["DisplayName"]   = "Kick",
+  ["DisplayName"]   = "kick",
   ["Icon"]          = "icon16/disconnect.png",
   ["SingleSelect"]  = false,
 }
