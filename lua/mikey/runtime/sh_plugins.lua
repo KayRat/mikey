@@ -4,6 +4,16 @@ mikey.plugins.list = mikey.plugins.list or {}
 
 local objPlugin = nil
 
+--[[
+  Originally I wanted to replace the plugin system with simploo objects
+  The problem is that we only send clients the data they need for plugins
+  because they have no business seeing how the server processes things
+
+  Unfortunately I haven't come up with a clever way to be able to create
+  objects for each realm with respect to the shared realm, aside from
+  using something like hooks to make plugin calls - which is dirty
+]]
+
 local function createNewPlugin(strName)
   local tblSkeleton = {
     -- data
