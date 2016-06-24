@@ -26,16 +26,16 @@ mikey.ranks.get = function(strRank)
   return mikey.ranks.list[strRank]
 end
 
-mikey.ranks.create = function(strName, iWeight, tblPermissions, tblAliases)
+mikey.ranks.create = function(strName, iWeight, tblPermissions, objColor)
   if(mikey.ranks.exists(strName)) then
     mikey.log.warn("Rank '%s' already exists; overwriting", (type(strName) == "string" and strName or strName:getName()))
   end
 
   iWeight         = iWeight or 1
   tblPermissions  = tblPermissions or {}
-  tblAliases      = tblAliases or {}
+  objColor        = objColor or color_black
 
-  local objRank = mikey.ranks.Rank.new(strName, iWeight, tblPermissions)
+  local objRank = mikey.ranks.Rank.new(strName, iWeight, tblPermissions, objColor)
 
   local function isThisRank(objPl)
     return objPl:getRank():getWeight() >= objRank:getWeight()
@@ -47,14 +47,6 @@ mikey.ranks.create = function(strName, iWeight, tblPermissions, tblAliases)
 
   mikey.ranks.list[objRank:getName()] = objRank
   mikey.ranks.list[objRank:getWeight()] = objRank
-
-  for k,v in pairs(tblAliases) do
-    v = makeStringMethodSafe(v)
-    mikey.ranks.list[v] = objRank
-
-    pl["is"..v] = isThisRank
-    pl["Is"..v] = isThisRank
-  end
 
   return objRank
 end
@@ -111,6 +103,6 @@ end)
 hook.Add("mikey.ranks.load", "mikey.ranks.addGuest", function()
   mikey.ranks.create("Guest", 1, {
     "useAdminChat",
-    "menu"
-  })
+    "menu",
+  }, Color(187, 255, 135, 255))
 end)
