@@ -2,8 +2,8 @@ local PANEL = {}
 
 PANEL.colors = {
   ["frame"] = {
-    ["background"] = Color(220, 220, 220, 255),
-    ["outline"] = Color(50, 50, 50, 255),
+    ["outline"]     = color_black,
+    ["background"]  = Color(223, 223, 223, 255),
   },
 }
 
@@ -36,7 +36,7 @@ function PANEL:PerformLayout(iWidth, iHeight)
   self.lblTitle:SetPos(5, 0)
 
   self.btnClose:SetSize(40, self.titleBar.height)
-  self.btnClose:SetPos(iWidth-self.btnClose:GetWide()-1, 0)
+  self.btnClose:SetPos(iWidth-self.btnClose:GetWide(), 0)
 end
 
 function PANEL:Paint(iWidth, iHeight)
