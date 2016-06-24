@@ -10,15 +10,28 @@ surface.CreateFont("MTextBold", {
   ["weight"]  = 700,
 })
 
+surface.CreateFont("MSmallTextBold", {
+  ["font"]    = "MTextBold",
+  ["size"]    = 15,
+})
+
 surface.CreateFont("MButtonDefault", {
-  ["font"]    = "DermaDefault",
-  ["size"]    = 17,
-  ["weight"]  = 500,
+  ["font"]    = "Default",
+  ["size"]    = 18,
+  ["weight"]  = 600,
 })
 
 surface.CreateFont("PlayerCardName", {
   ["font"]      = "DermaDefaultBold",
   ["size"]      = 22,
+  ["weight"]    = 500,
+  ["antialias"] = true,
+  ["outline"]   = false,
+})
+
+surface.CreateFont("PlayerCardNameSmall", {
+  ["font"]      = "DermaDefaultBold",
+  ["size"]      = 16,
   ["weight"]    = 500,
   ["antialias"] = true,
   ["outline"]   = false,
