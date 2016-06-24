@@ -3,7 +3,7 @@ local PANEL = {}
 function PANEL:Init()
   self:DockMargin(4, 4, 4, 4)
 
-  local objSettings = vgui.Create("MButton", self)
+  local objSettings = vgui.Create("MIconButton", self)
   objSettings:SetText("Settings")
   objSettings:SetIcon("icon16/cog.png")
   objSettings:Dock(LEFT)
@@ -17,10 +17,10 @@ function PANEL:Init()
     objText:Dock(FILL)
     objText:SetTextColor(color_black)
     objText:SetWrap(true)
-    objText:SetText("this feature is set for a future release. check back soon!")
+    objText:SetText("user settings are set for a future release - check back soon!")
 
     local objClose = vgui.Create("MButton", objNoFunction)
-    objClose:SetText("Close")
+    objClose:SetText("close")
     objClose.DoClick = function(selfButton)
       objNoFunction:Close()
     end
