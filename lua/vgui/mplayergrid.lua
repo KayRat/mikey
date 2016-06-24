@@ -1,9 +1,9 @@
 local PANEL = {}
 
 function PANEL:Init()
-  local pnlIconLayout = vgui.Create("DIconLayout", self)
-  pnlIconLayout:SetSpaceX(4)
-  pnlIconLayout:SetSpaceY(4)
+  local pnlIconLayout = vgui.Create("DListLayout", self)
+  --pnlIconLayout:SetSpaceX(4)
+  --pnlIconLayout:SetSpaceY(4)
   pnlIconLayout.onPlayerSelected = self.onPlayerSelected
   pnlIconLayout.onPlayerDeselected = self.onPlayerDeselected
 
@@ -59,8 +59,9 @@ function PANEL:addPlayerCard(objPl)
 
   local pnl = self.m_pnlIconLayout:Add("MPlayerCard")
   pnl:SetTall(iCardHeight)
-  pnl:DockMargin(0, 0, 0, 5)
-  pnl:Dock(TOP)
+  pnl:SetWide(150)
+  pnl:DockMargin(0, 0, 3, 5)
+  --pnl:Dock(FILL)
   pnl:setPlayer(objPl)
   --pnl:SetParent(self.m_pnlIconLayout)
 

@@ -50,10 +50,10 @@ end
 PANEL.m_iSelectionWidth = 0
 
 function PANEL:Paint(iWidth, iHeight)
-  local iCardSection = math.ceil(iHeight/14)
+  local iCardSection = math.ceil(iHeight*0.05)
 
   local iIsSelectedWidth = self:IsSelected() and math.ceil(iWidth*0.015) or 0
-  self.m_iSelectionWidth = math.Approach(self.m_iSelectionWidth, iIsSelectedWidth, 1)
+  self.m_iSelectionWidth = math.Approach(self.m_iSelectionWidth, iIsSelectedWidth, iWidth*0.001)
 
   local objTeamColor = IsValid(self:getPlayer()) and team.GetColor(self:getPlayer():Team()) or color_white
   local iIsSelectedOffset = self:IsSelected() and self.m_iSelectionWidth or 0
@@ -63,8 +63,6 @@ function PANEL:Paint(iWidth, iHeight)
 
   surface.SetDrawColor(objTeamColor)
   surface.DrawRect(self.avatar:GetWide(), iCardSection+1, iWidth-self.avatar:GetWide()-iIsSelectedOffset-1, iHeight-iCardSection*2-2)
-
-  --if(not self:IsHovered() and not self:IsChildHovered(6) and not self:IsSelected()) then return end
 
   if(self.m_iSelectionWidth > 0) then
     surface.SetDrawColor(color_black)
@@ -76,7 +74,7 @@ function PANEL:Paint(iWidth, iHeight)
 end
 
 function PANEL:PaintOver(iWidth, iHeight)
-  local strName = IsValid(self:getPlayer()) and self:getPlayer():Nick() or "..."
+  local strName = IsValid(self:getPlayer()) and self:getPlayer():Nick() or ". . ."
 
   surface.SetFont("PlayerCardName")
   local iNameHeight = select(2, surface.GetTextSize(string.sub(strName, 1, 1)))
