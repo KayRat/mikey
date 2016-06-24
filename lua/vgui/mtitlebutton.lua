@@ -58,7 +58,10 @@ function PANEL:Paint(w, h)
         surface.SetDrawColor(self.colors.normal)
     end
 
-    surface.DrawRect(1, 1, w-1, h-2)
+    surface.DrawRect(1, 1, w-2, h-2)
+
+    surface.SetDrawColor(color_black)
+    surface.DrawLine(0, 1, 0, h)
 end
 
 vgui.Register("MTitleButton", PANEL, "DButton")
