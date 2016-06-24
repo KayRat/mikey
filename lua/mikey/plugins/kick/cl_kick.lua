@@ -23,10 +23,9 @@ mikey.network.receive("kick.log", function(tblData)
 
   mikey.util.processNames(tblMessage, tblTargets)
 
-  mikey.util.addPlainText(tblMessage, " the boot (")
+  mikey.util.addPlainText(tblMessage, " the boot: ")
   table.insert(tblMessage, mikey.colors.secondary)
   table.insert(tblMessage, strReason)
-  mikey.util.addPlainText(tblMessage, ")")
 
   chat.AddText(unpack(tblMessage))
 end)
