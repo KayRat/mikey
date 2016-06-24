@@ -15,6 +15,10 @@ local tblTitles = {
   "isn't this random title a waste of CPU?",
   os.time(),
   math.Round(os.time()*.25),
+  "what chu want a cookie",
+  "'You miss 100% of the shots you never take' - Wayne Gretzky - Michael Scott",
+  "That's what she said",
+  "Dwight, you ignorant slut!",
 }
 
 local function refreshCards(objEnt)
@@ -33,7 +37,7 @@ hook.Add("OnEntityCreated", "mikey.menu.refresh", function(objEnt) if(objEnt:IsP
 mikey.network.receive("mikey.menu.open", function(tblData)
   local iWidth, iHeight = ScrW(), ScrH()
   local iMenuWidth  = math.Clamp(ScrW()*0.6, 825, ScrW())
-  local iMenuHeight = math.Clamp(ScrH()*0.4, 525, ScrH())
+  local iMenuHeight = math.Clamp(ScrH()*0.4, 375, ScrH())
 
   if(IsValid(objMenu) and IsValid(objMenu.m_pnlCanvas)) then
     objMenu:InvalidateChildren(true)
