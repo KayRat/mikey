@@ -1,7 +1,7 @@
 local PANEL = {}
 PANEL.Colors = {
   ["Normal"]          = mikey.colors.alt,
-  ["Administration"]  = Color(255, 125, 125, 255),
+  ["Administration"]  = Color(225, 50, 50, 255),
   ["Fun"]             = Color(235, 235, 125, 255),
   ["OnHover"]         = Color(125, 235, 125, 195),
 }
@@ -26,7 +26,8 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout(iWidth, iHeight)
-  self.BaseClass.PerformLayout(self, iWidth, iHeight)
+  DButton.PerformLayout(self, iWidth, iHeight)
+
   self:SetTextColor(self.Depressed and objTextDepressed or objTextNormal)
 end
 
