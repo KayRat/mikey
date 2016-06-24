@@ -49,11 +49,11 @@ function PANEL:Init()
       local objDisplayName = tblMenu["DisplayName"]
       local strText = type(strText) == "function" and objDisplayName() or objDisplayName
 
-      local objPluginButton = vgui.Create("MButton")
+      local objPluginButton = vgui.Create("MActionButton")
       objPluginButton:SetText(strText)
-      objPluginButton:SetIcon(tblMenu["Icon"])
+      --objPluginButton:SetIcon(tblMenu["Icon"])
       objPluginButton:SetWide(80)
-      if(tblMenu["Category"] and objPluginButton.Colors[tblMenu["Category"]]) then
+      if(false and tblMenu["Category"] and objPluginButton.Colors[tblMenu["Category"]]) then
         objPluginButton:SetColorScheme(tblMenu["Category"])
       end
       objPluginButton.DoClick = function()
