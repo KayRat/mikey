@@ -44,6 +44,22 @@ hook.Add("mikey.groups.fetchPermissions", "mikey.groups.fetchAll", function()
   end, function(self, strError)
     mikey.log.error(strError)
   end)
+
+    for k,v in pairs(tblData) do
+      local iParent = v['parent']
+      local iTarget = v['target']
+
+      local objParentGroup = mikey.groups.get(iParent)
+      local objTargetGroup = mikey.groups.get(iTarget)
+
+      if(objParentGroup and objTargetGroup) then
+      else
+        mikey.log.error("unable to locate a group when building inheritence")
+      end
+    end
+  end, function(self, strError)
+    mikey.log.error(strError)
+  end)
 end)
 
 hook.Add("PlayerInitialSpawn", "mikey.groups.sendGroupData", function(objPl)
