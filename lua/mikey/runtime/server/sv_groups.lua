@@ -45,7 +45,7 @@ hook.Add("mikey.groups.fetchPermissions", "mikey.groups.fetchAll", function()
     mikey.log.error(strError)
   end)
 
-  mikey.db.query("SELECT group_inheritence.* FROM group_inheritence", function(self, tblData) -- TODO: actual inheritence, not this weird stuff
+  mikey.db.query("SELECT * FROM group_inheritence", function(self, tblData) -- TODO: actual inheritence, not this weird stuff
     for k,v in pairs(tblData) do
       local iParent = v['parent']
       local iTarget = v['target']
