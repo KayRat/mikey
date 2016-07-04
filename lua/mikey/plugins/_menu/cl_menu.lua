@@ -19,6 +19,9 @@ local tblTitles = {
   "'You miss 100% of the shots you never take' - Wayne Gretzky - Michael Scott",
   "That's what she said",
   "Dwight, you ignorant slut!",
+  "You don't even know how poorly made this is",
+  "God, you are such a racist",
+  "NO GOD NO. NO. NO. PLEASE NO. NO. NOOOOOOOOOOOOOOOOOOOOOOOOO-",
 }
 
 local function refreshCards(objEnt)
