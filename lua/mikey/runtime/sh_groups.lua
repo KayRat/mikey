@@ -2,16 +2,8 @@ mikey = mikey or {}
 mikey.groups = mikey.groups or {}
 mikey.groups.list = mikey.groups.list or {}
 
-mikey.groups.get = function(obj)
-  if(type(obj) == "string") then
-    for k,v in pairs(mikey.groups.getAll()) do
-      if(v:getName() == obj) then
-        return v
-      end
-    end
-  end
-
-  return mikey.groups.list[obj] or nil
+mikey.groups.get = function(strGroupName)
+  return mikey.groups.list[strGroupName] or nil
 end
 
 mikey.groups.getAll = function()
@@ -21,7 +13,7 @@ end
 local pl = FindMetaTable("Player")
 
 function pl:getGroup()
-  return mikey.groups.get(self:getNWVar("usergroup", 1))
+  return mikey.groups.get(self:getNWVar("usergroup", "Guest"))
 end
 
 function pl:IsAdmin()
@@ -33,13 +25,5 @@ function pl:IsSuperAdmin()
 end
 
 function pl:GetUserGroup()
-  return self:getNWVar("usergroup", 1)
-end
-
-function pl:IsUserGroup(strGroupName)
-  if(type(strGroupName) == "string") then
-    return self:GetUserGroup() == mikey.groups.get(strGroupName):getID()
-  end
-
-  return self:GetUserGroup() == strGroupName
+  return self:getNWVar("usergroup", "Guest")
 end

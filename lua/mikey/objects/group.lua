@@ -1,22 +1,18 @@
 class "Group" {
   private {
-    m_iGroupID        = 0;
     m_strName         = "??";
     m_objColor        = color_black;
+    m_strInheritsFrom = "";
     m_iWeight         = 1;
     m_tblPermissions  = {};
   };
 
   public {
-    __construct = function(self, iGroupID, strName, objColor, iWeight)
-      self.m_iGroupID       = iGroupID
-      self.m_strName        = strName
-      self.m_objColor       = objColor
-      self.m_iWeight        = iWeight
-    end;
-
-    getID           = function(self)
-      return self.m_iGroupID
+    __construct = function(self, strName, objColor, strInheritsFrom, iWeight)
+      self.m_strName          = strName
+      self.m_objColor         = objColor
+      self.m_strInheritsFrom  = strInheritsFrom
+      self.m_iWeight          = iWeight
     end;
 
     getName         = function(self)
@@ -25,6 +21,10 @@ class "Group" {
 
     getColor        = function(self)
       return self.m_objColor
+    end;
+
+    getInherited    = function(self)
+      return self.m_strInheritsFrom
     end;
 
     getWeight       = function(self)
@@ -46,7 +46,8 @@ class "Group" {
     end;
 
     hasPermission   = function(self, strPermission)
-      return self.m_tblPermissions[strPermission] ~= nil
+      local strInheritsFrom = self:getInherited()
+      return self.m_tblPermissions[strPermission] ~= nil or (strInheritsFrom and mikey.groups.get(strInheritsFrom):hasPermission(strPermission))
     end;
   };
 }
