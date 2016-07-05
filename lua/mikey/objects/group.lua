@@ -47,7 +47,7 @@ class "Group" {
 
     hasPermission   = function(self, strPermission)
       local strInheritsFrom = self:getInherited()
-      return self.m_tblPermissions[strPermission] ~= nil or (strInheritsFrom and mikey.groups.get(strInheritsFrom):hasPermission(strPermission))
+      return (strInheritsFrom and mikey.groups.get(strInheritsFrom):hasPermission(strPermission)) or self.m_tblPermissions[strPermission] ~= nil
     end;
   };
 }
