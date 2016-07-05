@@ -13,7 +13,7 @@ end
 local pl = FindMetaTable("Player")
 
 function pl:getGroup()
-  return mikey.groups.get(self:getNWVar("usergroup", "Guest"))
+  return mikey.groups.get(self:GetUserGroup())
 end
 
 function pl:IsAdmin()
