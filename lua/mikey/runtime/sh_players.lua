@@ -4,8 +4,9 @@ mikey.players = mikey.players or {}
 local pl = FindMetaTable("Player")
 
 function pl:hasPermission(strPermission)
-  if(not self:getGroup()) then return false end
-  return self:getGroup():hasPermission(strPermission)
+  local objGroup = self:getGroup()
+  if(not objGroup) then return false end
+  return objGroup:hasPermission(strPermission)
 end
 
 pl.HasPermission = pl.hasPermission
