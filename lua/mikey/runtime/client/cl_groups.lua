@@ -6,7 +6,7 @@ mikey.network.receive("groups.fullUpdate", function(tblData)
   for k,v in pairs(tblData) do
     local strName         = v['name']
     local objColor        = v['color']
-    local strInheitsFrom  = v['inheritsFrom']
+    local strInheritsFrom  = v['inheritsFrom']
     local iWeight         = v['weight']
     local tblPermissions  = v['permissions']
 
