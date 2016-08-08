@@ -26,7 +26,7 @@ mikey.network.receive("kick.doKick", function(objPl, tblData)
   end
 
   local tblTargets  = mikey.util.auditTargets(tblData["targets"])
-  local strReason   = tblData["reason"] or "Kicked by "..objPl:Nick()..": Consider this a warning, don't do it again"
+  local strReason   = tblData["reason"] or "Consider this a warning, don't do it again"
 
   PLUGIN:logAction(objPl, tblTargets, strReason)
 
