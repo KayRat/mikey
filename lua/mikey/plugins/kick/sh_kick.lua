@@ -9,12 +9,12 @@ PLUGIN["Menu"] = {
 
 PLUGIN.canUserRun = function(self, objPl)
   if(not IsValid(objPl)) then
-    return mikey.permission.NO_CONSOLE
+    return mikey.permissions.NO_CONSOLE
   end
 
   if(objPl:hasPermission("kick")) then
     return true
   end
 
-  return mikey.permission.NONE
+  return mikey.permissions.NONE
 end
