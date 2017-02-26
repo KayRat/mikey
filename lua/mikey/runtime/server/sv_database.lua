@@ -5,7 +5,7 @@ require("mysqloo")
 
 function mikey.db.connect()
   if(not file.Exists("mikey_config.json", "DATA")) then
-    mikey.log.error("no config file found")
+    mikey.log.error("no mysql config file found - mikey will absolutely not work!!!!!!")
     return
   end
 
@@ -39,6 +39,8 @@ end
 if(not mikey.db.m_objDatabase) then
   mikey.db.connect()
 end
+
+-- FIXME: actually check for database connections instead of mindless queries to keep the connection alive
 
 timer.Create("mikey.db.nosleep", 30, 0, function()
   mikey.db.query("SELECT 1;");
