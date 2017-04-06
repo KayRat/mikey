@@ -47,7 +47,7 @@ function PANEL:Paint(iWidth, iHeight)
   derma.SkinHook("Paint", "Frame", self, iWidth, iHeight)
 
   -- frame title bar
-  surface.SetDrawColor(mikey.colors.primary)
+  surface.SetDrawColor(Color(137, 255, 255, 255))
   surface.DrawRect(1, 1, iWidth-2, self.titleBar.height)
 
   surface.SetDrawColor(color_black)
