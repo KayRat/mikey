@@ -1,4 +1,3 @@
-include("autorun/simploo.lua")
 mikey = mikey or {}
 
 local function loadDirectory(strDir)
