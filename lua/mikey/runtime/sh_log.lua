@@ -1,7 +1,7 @@
 mikey = mikey or {}
 mikey.log = mikey.log or {}
 
-local logger = ubilog.new("serverid")
+local logger = ubilog.new("mikey")
 
 function mikey.log.warn(str, ...)
     logger:warn(str, ...)
