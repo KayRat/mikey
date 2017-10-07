@@ -3,10 +3,6 @@ mikey.log = mikey.log or {}
 
 local logger = ubilog.new("serverid")
 
-local function out(str)
-  -- TODO: file and/or database logging
-end
-
 function mikey.log.warn(str, ...)
     logger:warn(str, ...)
 end
